@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPEED·ST — Blackout Plates, Underglow, Glow Packs & Stickers</title>
+<meta name="description" content="SPEED·ST builds gear for the night scene: blackout plates, underglow kits, interior glow packs and sticker drops. Plus meets and collabs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<style>
+  /* ticker */
+  .ticker { background: var(--ink); color: var(--bone); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 8px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-track { display: inline-block; animation: slide 30s linear infinite; }
+  .ticker-track span { padding: 0 26px; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* hero */
+  .hero { position: relative; padding: 84px 0 72px; overflow: hidden; }
+  .hero-grid-bg { position: absolute; inset: 0; opacity: .55; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 52px 52px; mask-image: radial-gradient(circle at 72% 28%, #000, transparent 70%); }
+  .hero-in { position: relative; z-index: 2; display: grid; grid-template-columns: 1.05fr .95fr; gap: 50px; align-items: center; }
+  .hero h1 { font-size: clamp(46px, 7vw, 92px); }
+  .hero h1 .out { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+  .lead { color: var(--smoke); font-size: 17px; max-width: 460px; margin: 26px 0 34px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .stats { display: flex; gap: 34px; margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .stat .n { font-family: 'Anton', sans-serif; font-size: 30px; }
+  .stat .l { font-size: 11px; color: var(--smoke); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+  .hero-img { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); transform: rotate(-3deg); background: var(--ink); }
+  .hero-img img { width: 100%; height: auto; display: block; object-fit: cover; aspect-ratio: 4/5; }
+  @media (max-width: 860px) { .hero-in { grid-template-columns: 1fr; } .hero-img { max-width: 420px; } }
+
+  .pad { padding: 88px 0; }
+  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 42px; flex-wrap: wrap; gap: 16px; }
+  .sec-head h2 { font-size: clamp(34px, 5vw, 56px); }
+  .sec-head p { color: var(--smoke); max-width: 380px; font-size: 14px; margin: 0; }
+  .dark .sec-head p { color: var(--fog); }
+
+  /* category tiles */
+  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .cat {
+    position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 340px; border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--bone);
+    border: 1px solid var(--line); background: var(--ink);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .cat:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+  .cat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .75; transition: opacity .3s, transform .4s; }
+  .cat:hover img { opacity: .9; transform: scale(1.04); }
+  .cat-body { position: relative; z-index: 2; padding: 22px; background: linear-gradient(transparent, rgba(16,16,19,.92) 55%); }
+  .cat-body .num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; color: var(--fog); }
+  .cat-body h3 { font-family: 'Anton', sans-serif; font-size: 26px; text-transform: uppercase; margin: 6px 0 4px; }
+  .cat-body p { font-size: 12px; color: var(--fog); margin: 0 0 10px; }
+  .cat-body .go { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--white); }
+  @media (max-width: 1000px) { .cats { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .cats { grid-template-columns: 1fr; } }
+
+  /* dark showcase band */
+  .show-band { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .show-band img { width: 100%; border-radius: 10px; border: 1px solid var(--line-dark); box-shadow: var(--shadow-dark); display: block; }
+  .show-band .lead { color: var(--fog); }
+  .feat-list { list-style: none; display: grid; gap: 12px; margin: 26px 0 32px; }
+  .feat-list li { padding-left: 24px; position: relative; font-size: 14px; color: var(--fog); }
+  .feat-list li::before { content: "→"; position: absolute; left: 0; color: var(--white); }
+  @media (max-width: 860px) { .show-band { grid-template-columns: 1fr; } }
+
+  /* specs row */
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .spec { background: var(--card); padding: 34px 26px; }
+  .spec .ico { font-family: 'Anton', sans-serif; font-size: 26px; margin-bottom: 14px; }
+  .spec h4 { font-size: 16px; margin: 0 0 8px; }
+  .spec p { font-size: 13px; color: var(--smoke); margin: 0; }
+  @media (max-width: 860px) { .specs { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .specs { grid-template-columns: 1fr; } }
+
+  /* meets band */
+  .meets-band { position: relative; overflow: hidden; }
+  .meets-band .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .35; }
+  .meets-band .in { position: relative; z-index: 2; padding: 110px 0; max-width: 640px; }
+  .meets-band h2 { font-size: clamp(38px, 6vw, 64px); }
+  .meets-band p { color: var(--fog); font-size: 16px; margin: 20px 0 30px; }
+
+  /* notice */
+  .notice { border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 46px 44px 40px; position: relative; overflow: hidden; }
+  .notice::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 14px;
+    background-image: linear-gradient(45deg, #101013 25%, transparent 25%, transparent 75%, #101013 75%), linear-gradient(45deg, #101013 25%, transparent 25%, transparent 75%, #101013 75%);
+    background-size: 14px 14px; background-position: 0 0, 7px 7px; background-color: #fff; }
+  .notice h3 { font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; margin: 10px 0 12px; }
+  .notice p { color: var(--smoke); font-size: 14px; max-width: 720px; margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="ticker"><div class="ticker-track">
+  <span>Blackout plates</span><span>//</span><span>Underglow kits</span><span>//</span><span>Interior glow</span><span>//</span><span>Sticker drops</span><span>//</span><span>Free AU shipping over $250</span><span>//</span>
+  <span>Blackout plates</span><span>//</span><span>Underglow kits</span><span>//</span><span>Interior glow</span><span>//</span><span>Sticker drops</span><span>//</span><span>Free AU shipping over $250</span><span>//</span>
+</div></div>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="wrap hero-in">
+    <div>
+      <span class="sec-tag">Built for the night scene</span>
+      <h1 class="display">Gear that<br><span class="out">owns the</span><br>dark.</h1>
+      <p class="lead">Blackout plates, underglow, interior glow packs and sticker drops — engineered, tested, and run at meets across the country.</p>
+      <div class="hero-cta">
+        <a href="shop.html" class="btn btn-ink">Shop everything ↗</a>
+        <a href="meets.html" class="btn btn-ghost">Meets &amp; collabs</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">4</div><div class="l">Product lines</div></div>
+        <div class="stat"><div class="n">12K+</div><div class="l">Kits shipped</div></div>
+        <div class="stat"><div class="n">30+</div><div class="l">Meets hosted</div></div>
+        <div class="stat"><div class="n">48H</div><div class="l">Dispatch</div></div>
+      </div>
+    </div>
+    <div class="hero-img"><img src="assets/hero-product.png" alt="SPEED·ST hypercar at sunset" width="800" height="1000"></div>
+  </div>
+</header>
+
+<div class="checker"></div>
+
+<!-- PRODUCT LINES -->
+<section class="pad" id="lines">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">Product lines</span>
+        <h2 class="display">Pick your poison</h2>
+      </div>
+      <p>Four lines, one aesthetic. Everything ships from our AU warehouse within 48 hours.</p>
+    </div>
+    <div class="cats">
+      <a class="cat" href="blackout-plates.html">
+        <img src="assets/line-blackout-plates.png" alt="Blackout plate kit on dark background">
+        <div class="cat-body"><span class="num">01</span><h3>Blackout Plates</h3><p>Remote-controlled blackout overlays</p><span class="go">Shop line →</span></div>
+      </a>
+      <a class="cat" href="underglow.html">
+        <img src="assets/line-underglow.png" alt="GT-R with SPEED·ST underglow">
+        <div class="cat-body"><span class="num">02</span><h3>Underglow</h3><p>IP68 RGB kits, remote or app control</p><span class="go">Shop line →</span></div>
+      </a>
+      <a class="cat" href="interior-glow.html">
+        <img src="assets/line-interior-glow.png" alt="Interior glow installed in NSX">
+        <div class="cat-body"><span class="num">03</span><h3>Interior Glow</h3><p>Footwell &amp; ambient cabin lighting</p><span class="go">Shop line →</span></div>
+      </a>
+      <a class="cat" href="stickers.html">
+        <img src="assets/sticker-pack.png" alt="Sticker pack flat lay">
+        <div class="cat-body"><span class="num">04</span><h3>Stickers</h3><p>Die-cut vinyl drops &amp; banners</p><span class="go">Shop line →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BUNDLES -->
+<section class="pad" style="padding-top:0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">Bundles</span>
+        <h2 class="display">Save on the kit</h2>
+      </div>
+      <a href="bundles.html" class="btn btn-ghost">View all bundles</a>
+    </div>
+    <div class="pgrid" id="bundleGrid"></div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="pad" style="padding-top:0" id="featured">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">Featured</span>
+        <h2 class="display">Heavy hitters</h2>
+      </div>
+      <a href="shop.html" class="btn btn-ghost">View all products</a>
+    </div>
+    <div class="pgrid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- DARK BAND: UNDERGLOW SHOWCASE -->
+<section class="dark">
+  <div class="checker"></div>
+  <div class="wrap pad">
+    <div class="show-band">
+      <img src="assets/underglow-car.png" alt="GT-R with SPEED·ST underglow">
+      <div>
+        <span class="sec-tag">Underglow Pro</span>
+        <h2 class="display" style="font-size:clamp(32px,4.5vw,52px)">Lit from<br>below.</h2>
+        <ul class="feat-list">
+          <li>Dual-row LEDs — 18,000 lumens, 200+ modes</li>
+          <li>IP68 sealed. Rain, gravel, pressure washes — fine</li>
+          <li>App + remote control with music sync</li>
+          <li>Dash-mount switch — always know when it's on</li>
+        </ul>
+        <a href="underglow.html" class="btn btn-wht">Shop underglow ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">Why SPEED·ST</span>
+        <h2 class="display">No junk hardware</h2>
+      </div>
+    </div>
+    <div class="specs">
+      <div class="spec"><div class="ico">01</div><h4>Engineered, not rebadged</h4><p>Our own housings, looms and firmware — not marketplace drop-ship kits.</p></div>
+      <div class="spec"><div class="ico">02</div><h4>Sealed for the street</h4><p>IP68-rated exterior gear. Tested through rain, heat and pressure washes.</p></div>
+      <div class="spec"><div class="ico">03</div><h4>Tool-light installs</h4><p>Plug-and-play wiring with fused leads. Most installs done in under an hour.</p></div>
+      <div class="spec"><div class="ico">04</div><h4>12-month warranty</h4><p>Every kit covered. Replacement parts shipped from AU, no questions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEETS BAND -->
+<section class="dark meets-band" id="meets">
+  <img class="bg" src="assets/meets-hero.png" alt="SPEED·ST car meet with underglow">
+  <div class="wrap in">
+    <span class="sec-tag">Meets &amp; collaborations</span>
+    <h2 class="display">We don't just sell it.<br>We show up.</h2>
+    <p>Monthly meets, build collabs and brand partnerships. Bring your car, shoot with us, or get your build featured.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="meets.html" class="btn btn-wht">See upcoming meets ↗</a>
+      <a href="meets.html#collab" class="btn btn-ghost-inv">Pitch a collab</a>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<section class="pad" id="notice">
+  <div class="wrap">
+    <div class="notice">
+      <h3>Use it right</h3>
+      <p>Blackout plates and underglow are sold for off-road, show and private-property use. Road rules on plate visibility and exterior lighting vary by state — know yours before you roll out. You're responsible for how you run your gear.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+        <p style="font-size:13px;margin-top:14px;max-width:280px">Gear for the night scene. Designed and shipped from Australia.</p>
+      </div>
+      <div><h4>Shop</h4><ul>
+        <li><a href="bundles.html">Bundles</a></li>
+        <li><a href="blackout-plates.html">Blackout Plates</a></li>
+        <li><a href="underglow.html">Underglow</a></li>
+        <li><a href="interior-glow.html">Interior Glow</a></li>
+        <li><a href="stickers.html">Stickers</a></li>
+      </ul></div>
+      <div><h4>Community</h4><ul>
+        <li><a href="meets.html">Car meets</a></li>
+        <li><a href="meets.html#collab">Collaborations</a></li>
+        <li><a href="meets.html#featured-builds">Featured builds</a></li>
+      </ul></div>
+      <div><h4>Support</h4><ul>
+        <li><a href="#notice">Use policy</a></li>
+        <li><a href="shop.html">Shop all</a></li>
+        <li><a href="mailto:crew@speedst.com">crew@speedst.com</a></li>
+      </ul></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 SPEED·ST</span>
+      <span>Off-road / show use only where required</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  document.getElementById('bundleGrid').innerHTML =
+    CATALOG.filter(p => p.category === 'bundles').map(productCardHTML).join('');
+  document.getElementById('featuredGrid').innerHTML =
+    CATALOG.filter(p => p.featured && p.category !== 'bundles').map(productCardHTML).join('');
+</script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>

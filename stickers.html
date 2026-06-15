@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stickers & Decals — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<link rel="stylesheet" href="css/line-page.css">
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html" class="on">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<header class="line-hero">
+  <img class="bg" src="assets/sticker-pack.png" alt="" style="opacity:.22">
+  <div class="wrap in">
+    <div class="crumb"><a href="index.html">Home</a> / <a href="shop.html">Shop</a> / Stickers</div>
+    <h1 class="display">Stickers</h1>
+    <p>Die-cut vinyl drops, katakana decals and windshield banners. Strictly black and white — like everything else we make.</p>
+  </div>
+</header>
+<div class="checker"></div>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head">
+      <h2 class="display">Current drop</h2>
+      <p>Limited runs. When a pack sells out, it's gone.</p>
+    </div>
+    <div class="pgrid" id="grid"></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap line-pad">
+    <div class="line-band">
+      <img src="assets/sticker-pack.png" alt="Sticker pack 01 contents">
+      <div>
+        <span class="sec-tag">Materials</span>
+        <h2 class="display">Vinyl that<br>outlasts paint.</h2>
+        <ul>
+          <li>Cast vinyl rated 5+ years outdoors</li>
+          <li>Die-cut — no clear backing square</li>
+          <li>Pre-masked banners for one-person installs</li>
+          <li>Survives pressure washing and Aussie sun</li>
+        </ul>
+        <a href="product.html?id=sticker-pack-01" class="btn btn-wht">Shop Pack 01 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head"><h2 class="display">Questions</h2></div>
+    <div class="faq">
+      <details><summary>Matte or gloss?</summary><p>Matte black reads stealth and hides on dark paint. Gloss is high contrast and pops on any panel or glass.</p></details>
+      <details><summary>How do I apply the banner?</summary><p>The banner ships pre-masked. Clean the glass, position with the supplied guide tabs, squeegee, peel the mask. Ten minutes solo.</p></details>
+      <details><summary>Will they come off cleanly?</summary><p>Yes — heat the vinyl with a hair dryer and peel slowly. Any residue lifts with isopropyl.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  document.getElementById('grid').innerHTML =
+    CATALOG.filter(p => p.category === 'stickers').map(productCardHTML).join('');
+</script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>

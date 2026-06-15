@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop All — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<style>
+  .shop-head { padding: 56px 0 30px; }
+  .shop-head h1 { font-size: clamp(40px, 6vw, 72px); }
+  .shop-head p { color: var(--smoke); margin-top: 12px; max-width: 460px; font-size: 15px; }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; padding: 0 0 32px; }
+  .filter {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    background: var(--card); color: var(--smoke); border: 1px solid var(--line);
+    padding: 10px 18px; border-radius: 999px; transition: all .15s;
+  }
+  .filter:hover { border-color: var(--ink); color: var(--ink); }
+  .filter.on { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .count-line { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--smoke); margin-bottom: 20px; }
+  .shop-grid-wrap { padding-bottom: 88px; }
+</style>
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html" class="on">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<header class="wrap shop-head">
+  <span class="sec-tag">Shop</span>
+  <h1 class="display">Everything</h1>
+  <p>All products in one place — bundles, plates, glow and stickers. Free AU shipping over $250, dispatched within 48 hours.</p>
+</header>
+
+<div class="wrap">
+  <div class="filters" id="filters"></div>
+  <div class="count-line" id="countLine"></div>
+</div>
+
+<main class="wrap shop-grid-wrap">
+  <div class="pgrid" id="grid"></div>
+</main>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  let active = new URLSearchParams(location.search).get('cat') || 'all';
+  if (!CATEGORIES.some(c => c.id === active)) active = 'all';
+
+  function render() {
+    document.getElementById('filters').innerHTML = CATEGORIES.map(c =>
+      `<button class="filter${c.id === active ? ' on' : ''}" data-cat="${c.id}">${c.label}</button>`
+    ).join('');
+    const items = active === 'all' ? CATALOG : CATALOG.filter(p => p.category === active);
+    document.getElementById('grid').innerHTML = items.map(productCardHTML).join('');
+    document.getElementById('countLine').textContent = items.length + ' product' + (items.length === 1 ? '' : 's');
+    document.querySelectorAll('.filter').forEach(b => b.addEventListener('click', () => {
+      active = b.dataset.cat;
+      history.replaceState(null, '', active === 'all' ? 'shop.html' : 'shop.html?cat=' + active);
+      render();
+    }));
+  }
+  render();
+</script>
+<script src="js/catalog.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>

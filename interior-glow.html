@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interior Glow Packs — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<link rel="stylesheet" href="css/line-page.css">
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html" class="on">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<header class="line-hero">
+  <img class="bg" src="assets/interior-glow-marketing.png" alt="">
+  <div class="wrap in">
+    <div class="crumb"><a href="index.html">Home</a> / <a href="shop.html">Shop</a> / Interior Glow</div>
+    <h1 class="display">Interior<br>Glow</h1>
+    <p>Footwell bars and ambient strips that make the cabin match the build. USB-C powered, no hardwiring needed.</p>
+  </div>
+</header>
+<div class="checker"></div>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head">
+      <h2 class="display">The lineup</h2>
+      <p>Core covers the front cabin. Pro lights the whole interior and syncs to your music.</p>
+    </div>
+    <div class="pgrid" id="grid"></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap line-pad">
+    <div class="line-band">
+      <img src="assets/interior-glow-car.png" alt="Interior glow installed in NSX">
+      <div>
+        <span class="sec-tag">Clean installs</span>
+        <h2 class="display">No wiring<br>nightmares.</h2>
+        <ul>
+          <li>USB-C powered — runs off any port or supplied 12V adapter</li>
+          <li>Low-profile bars tuck under seats and trim</li>
+          <li>Remote on Core; app + music sync on Pro</li>
+          <li>Diffused lenses — glow, not hot spots</li>
+        </ul>
+        <a href="product.html?id=interior-pro" class="btn btn-wht">Shop the Pro pack ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head"><h2 class="display">Questions</h2></div>
+    <div class="faq">
+      <details><summary>Core or Pro?</summary><p>Core is a 4-piece front-cabin kit with remote control. Pro is 8 pieces covering front and rear footwells plus ambient strips, with app control and music sync.</p></details>
+      <details><summary>Does it drain the battery?</summary><p>The kits draw a few watts. Run them off a USB port that powers down with the car, or the supplied 12V accessory adapter.</p></details>
+      <details><summary>Can I run it while driving?</summary><p>Interior ambient lighting is generally fine, but steady non-distracting modes are recommended. Flashing modes are for parked use.</p></details>
+      <details><summary>Will the strips damage the trim?</summary><p>Everything mounts with 3M VHB and removable cable clips — no screws, no permanent marks.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  document.getElementById('grid').innerHTML =
+    CATALOG.filter(p => p.category === 'interior').map(productCardHTML).join('');
+</script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>

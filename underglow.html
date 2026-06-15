@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Underglow Kits — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<link rel="stylesheet" href="css/line-page.css">
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html" class="on">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<header class="line-hero">
+  <img class="bg" src="assets/underglow-pro-kit.png" alt="">
+  <div class="wrap in">
+    <div class="crumb"><a href="index.html">Home</a> / <a href="shop.html">Shop</a> / Underglow</div>
+    <h1 class="display">Underglow</h1>
+    <p>Aircraft-grade aluminium light bars, IP68 sealed, 16 million colours. Remote control on V1, full app and music sync on Pro.</p>
+  </div>
+</header>
+<div class="checker"></div>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head">
+      <h2 class="display">The lineup</h2>
+      <p>V1 for set-and-forget colour. Pro for addressable animations and music sync.</p>
+    </div>
+    <div class="pgrid" id="grid"></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap line-pad">
+    <div class="line-band">
+      <img src="assets/underglow-car.png" alt="BMW M3 with SPEED·ST underglow">
+      <div>
+        <span class="sec-tag">Hardware</span>
+        <h2 class="display">Built to cop<br>gravel rash.</h2>
+        <ul>
+          <li>Extruded aluminium housings — not flexible strips that peel</li>
+          <li>IP68 sealed against rain, mud and pressure washing</li>
+          <li>Fused plug-and-play loom with quick disconnects</li>
+          <li>Sedan/hatch and SUV/ute bar lengths</li>
+        </ul>
+        <a href="product.html?id=underglow-v1" class="btn btn-wht">Shop Kit V1 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-band" style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center">
+      <div>
+        <span class="sec-tag">Pro series</span>
+        <h2 class="display">Built for<br>show cars.</h2>
+        <p style="color:var(--smoke);font-size:15px;margin:20px 0 24px;max-width:420px">Dual-row LEDs, app control, music sync and IP68 sealing. The kit you see at every meet.</p>
+        <a href="product.html?id=underglow-pro" class="btn btn-ink">Shop Underglow Pro ↗</a>
+      </div>
+      <img src="assets/underglow-car.png" alt="Porsche with SPEED·ST underglow" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+    </div>
+  </div>
+</section>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head"><h2 class="display">Questions</h2></div>
+    <div class="faq">
+      <details><summary>V1 or Pro?</summary><p>V1 gives you 16M solid colours, fades and strobes from an RF remote. Pro adds addressable LEDs for chase animations, app control and music sync. Both use the same housings and loom.</p></details>
+      <details><summary>Is underglow legal?</summary><p>Rules vary by state — most restrict certain colours and flashing modes on public roads. Underglow is sold for show and private-property use; check your local rules.</p></details>
+      <details><summary>How hard is the install?</summary><p>Bars mount with supplied brackets or 3M VHB. The loom runs to your battery with an inline fuse. Most installs take about an hour with basic tools.</p></details>
+      <details><summary>What if a bar fails?</summary><p>12-month warranty. Individual bars are replaceable — you won't bin the whole kit.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  document.getElementById('grid').innerHTML =
+    CATALOG.filter(p => p.category === 'underglow').map(productCardHTML).join('');
+</script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>

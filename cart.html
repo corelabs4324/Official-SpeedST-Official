@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<style>
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(32px, 5vw, 48px); text-transform: uppercase; padding: 36px 0 28px; }
+  .cart-layout { display: grid; grid-template-columns: 1fr 320px; gap: 32px; padding-bottom: 80px; align-items: start; }
+  @media (max-width: 820px) { .cart-layout { grid-template-columns: 1fr; } }
+  .cart-empty { text-align: center; padding: 60px 20px; border: 1px dashed var(--line); border-radius: 12px; color: var(--smoke); }
+  .cart-item { display: grid; grid-template-columns: 80px 1fr auto; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--card); }
+  .cart-item h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .cart-item h3 a { color: inherit; text-decoration: none; }
+  .cart-item h3 a:hover { text-decoration: underline; }
+  .cart-item .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--smoke); line-height: 1.5; }
+  .cart-item .price { font-family: 'Anton', sans-serif; font-size: 22px; white-space: nowrap; text-align: right; }
+  .qty-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .qty-row button { width: 28px; height: 28px; border: 1px solid var(--line); background: var(--card); cursor: pointer; border-radius: 4px; font-size: 16px; line-height: 1; }
+  .qty-row span { font-family: 'JetBrains Mono', monospace; font-size: 12px; min-width: 20px; text-align: center; }
+  .cart-item .remove { background: none; border: none; color: var(--smoke); font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; cursor: pointer; margin-top: 8px; padding: 0; letter-spacing: .06em; display: block; }
+  .cart-item .remove:hover { color: var(--ink); }
+  .summary { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 24px; position: sticky; top: 90px; }
+  .summary h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; margin-bottom: 18px; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--smoke); margin-bottom: 10px; }
+  .sum-row.total { font-size: 16px; color: var(--ink); font-weight: 700; padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--line); }
+  .sum-row.total span:last-child { font-family: 'Anton', sans-serif; font-size: 28px; }
+  .ship-note { font-size: 11px; color: var(--smoke); margin: 12px 0 18px; line-height: 1.5; font-family: 'JetBrains Mono', monospace; }
+  .checkout-err { display: none; margin-top: 12px; padding: 12px; border: 1px solid #c44; border-radius: 4px; font-size: 13px; color: #a33; background: #fff5f5; }
+  .checkout-err.show { display: block; }
+  .success-banner { background: #f1f0ec; border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 14px; }
+  .success-banner strong { font-family: 'Anton', sans-serif; text-transform: uppercase; display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<main class="wrap">
+  <div id="successBanner" class="success-banner" hidden>
+    <strong>Order placed</strong>
+    Thanks — Stripe will email your receipt. We dispatch within 48 hours.
+  </div>
+  <div id="cancelBanner" class="success-banner" hidden style="background:#fff">
+    <strong>Checkout cancelled</strong>
+    Your cart is still here whenever you're ready.
+  </div>
+
+  <h1>Your cart</h1>
+  <div class="cart-layout">
+    <div id="cartItems"></div>
+    <aside class="summary" id="summary" hidden>
+      <h2>Order summary</h2>
+      <div class="sum-row"><span>Subtotal</span><span id="subtotal">$0</span></div>
+      <div class="sum-row"><span>Shipping</span><span id="shipping">Calculated at checkout</span></div>
+      <div class="sum-row total"><span>Total</span><span id="total">$0</span></div>
+      <p class="ship-note">Free AU shipping on orders over $250. Use code <strong>SpeedST10</strong> at checkout for 10% off.</p>
+      <button type="button" class="btn btn-ink" id="checkoutBtn" style="width:100%">Checkout with Stripe ↗</button>
+      <p class="ship-note" style="margin-top:10px;text-align:center">Secure payment · all major cards</p>
+      <div class="checkout-err" id="checkoutErr" role="alert"></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script src="js/cart.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+if (params.get('success') === '1') {
+  clearCart();
+  document.getElementById('successBanner').hidden = false;
+  history.replaceState(null, '', 'cart.html');
+}
+if (params.get('cancelled') === '1') {
+  document.getElementById('cancelBanner').hidden = false;
+  history.replaceState(null, '', 'cart.html');
+}
+
+function render() {
+  const cart = getCart();
+  const container = document.getElementById('cartItems');
+  const summary = document.getElementById('summary');
+
+  if (!cart.length) {
+    container.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><a href="shop.html" class="btn btn-ink" style="margin-top:20px;display:inline-flex">Browse products ↗</a></div>';
+    summary.hidden = true;
+    return;
+  }
+
+  summary.hidden = false;
+  let subtotal = 0;
+
+  container.innerHTML = cart.map((item, i) => {
+    const p = getProduct(item.productId);
+    if (!p) return '';
+    const size = p.sizes.find(s => s.id === item.variantId);
+    const lineTotal = p.price * (item.quantity || 1);
+    subtotal += lineTotal;
+    return `
+      <div class="cart-item">
+        <img src="${p.image}" alt="">
+        <div>
+          <h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
+          <div class="meta">${size ? size.label : item.variantId}${item.note ? '<br>Note: ' + item.note : ''}</div>
+          <div class="qty-row">
+            <button type="button" data-action="minus" data-i="${i}" aria-label="Decrease quantity">−</button>
+            <span>${item.quantity || 1}</span>
+            <button type="button" data-action="plus" data-i="${i}" aria-label="Increase quantity">+</button>
+          </div>
+          <button type="button" class="remove" data-i="${i}">Remove</button>
+        </div>
+        <div class="price">${formatPrice(lineTotal)}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('subtotal').textContent = formatPrice(subtotal) + ' AUD';
+  document.getElementById('total').textContent = formatPrice(subtotal) + '+';
+  document.getElementById('shipping').textContent = subtotal >= FREE_SHIPPING_MIN ? 'Free (AU)' : 'At checkout';
+
+  container.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.i);
+      const item = getCart()[i];
+      const q = item.quantity || 1;
+      updateCartQuantity(i, btn.dataset.action === 'plus' ? q + 1 : q - 1);
+      render();
+    });
+  });
+  container.querySelectorAll('.remove').forEach(btn => {
+    btn.addEventListener('click', () => { removeFromCart(Number(btn.dataset.i)); render(); });
+  });
+}
+
+document.getElementById('checkoutBtn').addEventListener('click', async () => {
+  const errEl = document.getElementById('checkoutErr');
+  const btn = document.getElementById('checkoutBtn');
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Redirecting…';
+  try {
+    await startCheckout();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Checkout with Stripe ↗';
+  }
+});
+
+render();
+</script>
+<script src="js/popup.js"></script>
+</body>
+</html>

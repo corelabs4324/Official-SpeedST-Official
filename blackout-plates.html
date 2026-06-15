@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackout Plates — SPEED·ST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
+<link rel="stylesheet" href="css/line-page.css">
+</head>
+<body>
+
+<nav class="site"><div class="wrap nav-in">
+  <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+  <div class="nav-links">
+    <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
+    <a href="blackout-plates.html" class="on">Blackout Plates</a>
+    <a href="underglow.html">Underglow</a>
+    <a href="interior-glow.html">Interior Glow</a>
+    <a href="stickers.html">Stickers</a>
+    <a href="meets.html">Meets &amp; Collabs</a>
+  </div>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+</div></nav>
+
+<header class="line-hero">
+  <img class="bg" src="assets/kit-dual.png" alt="">
+  <div class="wrap in">
+    <div class="crumb"><a href="index.html">Home</a> / <a href="shop.html">Shop</a> / Blackout Plates</div>
+    <h1 class="display">Blackout<br>Plates</h1>
+    <p>Remote-controlled blackout overlays that mount over your plate. Clear when you need it, gone when you don't. Show and private-property use.</p>
+  </div>
+</header>
+<div class="checker"></div>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head">
+      <h2 class="display">The lineup</h2>
+      <p>Single for one plate, dual to run front and rear off one remote.</p>
+    </div>
+    <div class="pgrid" id="grid"></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap line-pad">
+    <div class="line-band">
+      <img src="assets/feature-detail.png" alt="SPEED·ST vs competitors comparison">
+      <div>
+        <span class="sec-tag">How it works</span>
+        <h2 class="display">One click.<br>Total blackout.</h2>
+        <ul>
+          <li>PDLC smart film switches clear ↔ opaque in under a second</li>
+          <li>RF remote works from inside the cabin, up to 20 m</li>
+          <li>Over-plate mount — no drilling, no plate modification</li>
+          <li>Standard and slimline sizes, single or dual packs</li>
+        </ul>
+        <a href="product.html?id=plates-dual" class="btn btn-wht">Shop the dual kit ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="line-pad">
+  <div class="wrap">
+    <div class="line-head"><h2 class="display">Questions</h2></div>
+    <div class="faq">
+      <details><summary>Is this legal on the road?</summary><p>Plate visibility laws apply on public roads in every state. Blackout plates are sold for show, off-road and private-property use — you're responsible for when and where you activate it.</p></details>
+      <details><summary>Will it fit my plate?</summary><p>Standard (372 × 134 mm) covers most AU rear plates; slimline (372 × 100 mm) suits compact front plates. The dual pack can mix sizes.</p></details>
+      <details><summary>How is it powered?</summary><p>USB-C with included 12V adapter and extension leads. Hardwire kit available for clean installs.</p></details>
+      <details><summary>What's the warranty?</summary><p>12 months on the film, controller and remote. Replacement parts ship from our AU warehouse.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap foot-base">
+    <a href="index.html" class="mark sm inv"><span class="speed">SPEED</span><span class="st">·ST</span></a>
+    <span>© 2026 SPEED·ST — off-road / show use only where required</span>
+  </div>
+</footer>
+
+<script src="js/catalog.js"></script>
+<script>
+  document.getElementById('grid').innerHTML =
+    CATALOG.filter(p => p.category === 'plates').map(productCardHTML).join('');
+</script>
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>
