@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/theme.css">
+<script src="js/asset-fallback.js"></script>
+<link rel="stylesheet" href="css/popup.css">
 <style>
   /* ticker */
   .ticker { background: var(--ink); color: var(--bone); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 8px 0; overflow: hidden; white-space: nowrap; }
@@ -101,13 +103,14 @@
   <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
   <div class="nav-links">
     <a href="shop.html">Shop all</a>
+    <a href="bundles.html">Bundles</a>
     <a href="blackout-plates.html">Blackout Plates</a>
     <a href="underglow.html">Underglow</a>
     <a href="interior-glow.html">Interior Glow</a>
     <a href="stickers.html">Stickers</a>
     <a href="meets.html">Meets &amp; Collabs</a>
   </div>
-  <a href="shop.html" class="btn btn-ink" style="padding:10px 18px;font-size:12px">Shop ↗</a>
+  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
 </div></nav>
 
 <!-- HERO -->
@@ -171,15 +174,15 @@
   <div class="checker"></div>
   <div class="wrap pad">
     <div class="show-band">
-      <img src="assets/underglow-car.png" alt="GT-R with SPEED·ST underglow at night">
+      <img src="assets/underglow-car.png" alt="GT-R with SPEED·ST underglow">
       <div>
-        <span class="sec-tag">Underglow Kit V1</span>
+        <span class="sec-tag">Underglow Pro</span>
         <h2 class="display" style="font-size:clamp(32px,4.5vw,52px)">Lit from<br>below.</h2>
         <ul class="feat-list">
-          <li>Aircraft-grade aluminium bars — not flimsy strips</li>
+          <li>Dual-row LEDs — 18,000 lumens, 200+ modes</li>
           <li>IP68 sealed. Rain, gravel, pressure washes — fine</li>
-          <li>RF remote with 16M colours and chase modes</li>
-          <li>Plug-and-play loom, fused at the battery</li>
+          <li>App + remote control with music sync</li>
+          <li>Dash-mount switch — always know when it's on</li>
         </ul>
         <a href="underglow.html" class="btn btn-wht">Shop underglow ↗</a>
       </div>
@@ -207,7 +210,7 @@
 
 <!-- MEETS BAND -->
 <section class="dark meets-band" id="meets">
-  <img class="bg" src="assets/meets-hero.png" alt="SPEED·ST car meet with underglow at night">
+  <img class="bg" src="assets/meets-hero.png" alt="SPEED·ST car meet with underglow">
   <div class="wrap in">
     <span class="sec-tag">Meets &amp; collaborations</span>
     <h2 class="display">We don't just sell it.<br>We show up.</h2>
@@ -237,6 +240,7 @@
         <p style="font-size:13px;margin-top:14px;max-width:280px">Gear for the night scene. Designed and shipped from Australia.</p>
       </div>
       <div><h4>Shop</h4><ul>
+        <li><a href="bundles.html">Bundles</a></li>
         <li><a href="blackout-plates.html">Blackout Plates</a></li>
         <li><a href="underglow.html">Underglow</a></li>
         <li><a href="interior-glow.html">Interior Glow</a></li>
@@ -260,5 +264,7 @@
   </div>
 </footer>
 
+<script src="js/cart.js"></script>
+<script src="js/popup.js"></script>
 </body>
 </html>
