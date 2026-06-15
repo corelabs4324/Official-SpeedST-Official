@@ -166,20 +166,6 @@
   </div>
 </section>
 
-<!-- FEATURED -->
-<section class="pad" style="padding-top:0" id="featured">
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="sec-tag">Featured</span>
-        <h2 class="display">Heavy hitters</h2>
-      </div>
-      <a href="shop.html" class="btn btn-ghost">View all products</a>
-    </div>
-    <div class="pgrid" id="featuredGrid"></div>
-  </div>
-</section>
-
 <!-- DARK BAND: UNDERGLOW SHOWCASE -->
 <section class="dark">
   <div class="checker"></div>
@@ -274,10 +260,5 @@
   </div>
 </footer>
 
-<script src="js/catalog.js"></script>
-<script>
-  document.getElementById('featuredGrid').innerHTML =
-    CATALOG.filter(p => p.featured).map(productCardHTML).join('');
-</script>
 </body>
 </html>
