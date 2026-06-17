@@ -140,3 +140,4 @@ footer.site a:hover { color: var(--bone); }
 .foot-grid ul { list-style: none; display: grid; gap: 8px; }
 .foot-base { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 @media (max-width: 820px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+
