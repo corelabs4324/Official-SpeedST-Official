@@ -1,6 +1,6 @@
-// Stripe Price IDs live in data/stripe-prices.json (format: productId:variantId → price_…)
-// Cart checkout uses Stripe Checkout Sessions via /api/create-checkout (deploy on Vercel).
-// See STRIPE-SETUP.md — do NOT use Payment Links for multi-item checkout.
+// PASTE STRIPE PAYMENT LINKS HERE — one per product (or per variant in sizes[].stripeLink)
+// Create links in Stripe Dashboard → Payment Links. Paste the full https://buy.stripe.com/… URL.
+// Variant-level links override the product-level stripeLink when set.
 
 /**
  * SPEED·ST product catalog — blackout plates, underglow, interior glow, stickers
@@ -8,36 +8,34 @@
 const CATALOG = [
   /* ---- BLACKOUT PLATES ---- */
   {
-    id: 'plates-single',
+    id: 'plates-blackout',
     category: 'plates', categoryLabel: 'Blackout Plates',
-    title: 'Blackout Plate™ — Single',
-    subtitle: 'Remote-controlled blackout overlay, standard or slimline fit',
+    title: 'Blackout Plate™',
+    subtitle: 'Remote-controlled blackout overlay — single or dual pack, standard or slimline fit',
     price: 263, compareAt: 458,
-    image: 'assets/kit-dual.png',
-    stripeLink: '', // YOUR_STRIPE_LINK_HERE — or set per variant below
+    image: 'assets/kit-dual.svg',
+    stripeLink: '',
     badge: null,
     featured: true,
     page: 'blackout-plates.html',
-    sizes: [
-      { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: '' },
-      { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'plates-dual',
-    category: 'plates', categoryLabel: 'Blackout Plates',
-    title: 'Blackout Plate™ — Dual',
-    subtitle: 'Front + rear set, one remote controls both',
-    price: 427, compareAt: 725,
-    image: 'assets/kit-dual.png',
-    stripeLink: '',
-    badge: 'Best value',
-    featured: true,
-    page: 'blackout-plates.html',
-    sizes: [
-      { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: '' },
-      { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: '' },
-      { id: 'mixed', label: 'Mixed pair', dim: '1 × Standard + 1 × Slimline', note: 'Front/rear mix', mixedNote: true, stripeLink: '' }
+    packs: [
+      {
+        id: 'single', label: 'Single pack',
+        price: 263, compareAt: 458,
+        sizes: [
+          { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: '' },
+          { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: '' }
+        ]
+      },
+      {
+        id: 'dual', label: 'Dual pack',
+        price: 427, compareAt: 725,
+        sizes: [
+          { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: '' },
+          { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: '' },
+          { id: 'mixed', label: 'Mixed pair', dim: '1 × Standard + 1 × Slimline', note: 'Front/rear mix', mixedNote: true, stripeLink: '' }
+        ]
+      }
     ]
   },
 
@@ -45,12 +43,12 @@ const CATALOG = [
   {
     id: 'underglow-v1',
     category: 'underglow', categoryLabel: 'Underglow',
-    title: 'Underglow Kit V1',
+    title: 'Underglow Kit',
     subtitle: '4-piece RGB aluminium bars, RF remote, IP68',
     price: 349, compareAt: 449,
-    image: 'assets/underglow-kit.png',
+    image: 'assets/underglow-kit.svg',
     stripeLink: '',
-    badge: 'New',
+    badge: null,
     featured: true,
     page: 'underglow.html',
     sizes: [
@@ -58,44 +56,21 @@ const CATALOG = [
       { id: 'suv', label: 'SUV / Ute', dim: '2 × 150 cm + 2 × 120 cm', note: 'Long wheelbase', stripeLink: '' }
     ]
   },
-  {
-    id: 'underglow-pro',
-    category: 'underglow', categoryLabel: 'Underglow',
-    title: 'Underglow Pro',
-    subtitle: 'App control, music sync, chase animations',
-    price: 469, compareAt: null,
-    image: 'assets/underglow-pro-kit.png',
-    sizes: [
-      { id: 'pro-sedan', label: 'Sedan / Hatch', dim: '2 × 120 cm + 2 × 90 cm', note: 'Addressable LEDs', stripeLink: '' },
-      { id: 'pro-suv', label: 'SUV / Ute', dim: '2 × 150 cm + 2 × 120 cm', note: 'Addressable LEDs', stripeLink: '' }
-    ]
-  },
 
   /* ---- INTERIOR GLOW ---- */
   {
     id: 'interior-core',
     category: 'interior', categoryLabel: 'Interior Glow',
-    title: 'Interior Glow Pack — Core',
+    title: 'Interior Glow Pack',
     subtitle: '2 footwell bars + 2 ambient strips, USB-C powered',
     price: 129, compareAt: 179,
-    image: 'assets/interior-glow-kit.png',
+    image: 'assets/interior-glow-kit.svg',
     stripeLink: '',
     badge: null,
     featured: true,
     page: 'interior-glow.html',
     sizes: [
-      { id: 'core', label: 'Core 4-piece', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'interior-pro',
-    category: 'interior', categoryLabel: 'Interior Glow',
-    title: 'Interior Glow Pack — Pro',
-    subtitle: 'Full-cabin 8-piece, music sync, app + remote',
-    price: 199, compareAt: 259,
-    image: 'assets/interior-glow-marketing.png',
-    sizes: [
-      { id: 'pro8', label: 'Pro 8-piece', dim: '4 × footwell + 4 × ambient strips', note: 'Front + rear cabin', stripeLink: '' }
+      { id: 'core', label: '4-piece kit', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: '' }
     ]
   },
 
@@ -106,7 +81,7 @@ const CATALOG = [
     title: 'Sticker Pack 01',
     subtitle: '7 die-cut vinyl decals — checker, katakana, skull & more',
     price: 29, compareAt: null,
-    image: 'assets/sticker-pack.png',
+    image: 'assets/sticker-pack.svg',
     stripeLink: '',
     badge: null,
     featured: true,
@@ -122,7 +97,7 @@ const CATALOG = [
     title: 'SPEED·ST Windshield Banner',
     subtitle: '950 × 130 mm sun-strip banner, pre-masked for install',
     price: 39, compareAt: null,
-    image: 'assets/sticker-pack.png',
+    image: 'assets/sticker-pack.svg',
     stripeLink: '',
     badge: null,
     featured: false,
@@ -131,167 +106,18 @@ const CATALOG = [
       { id: 'wob', label: 'White on black', dim: '950 × 130 mm', note: 'Classic', stripeLink: '' },
       { id: 'bow', label: 'Black on white', dim: '950 × 130 mm', note: 'Inverted', stripeLink: '' }
     ]
-  },
-
-  /* ---- BUNDLES ---- */
-  {
-    id: 'bundle-glow-starter',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Glow Starter Pack',
-    subtitle: 'Dip your toes — cabin glow + sticker drop',
-    description: 'The cheapest way into SPEED·ST. Interior ambient lighting plus our current sticker run — perfect as a gift or first mod.',
-    price: 139, compareAt: 158,
-    image: 'assets/interior-glow-kit.png',
-    stripeLink: '',
-    badge: 'Entry',
-    featured: false,
-    page: 'bundles.html',
-    includes: ['1 × Interior Glow Pack — Core', '1 × Sticker Pack 01'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Interior + stickers', note: 'Save $19 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-night-rider',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Night Rider Bundle',
-    subtitle: 'Light it up inside and out',
-    description: 'Transform your car inside and out while saving compared to purchasing each product individually.',
-    price: 349, compareAt: 478,
-    image: 'assets/underglow-kit.png',
-    stripeLink: '',
-    badge: null,
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Underglow Kit V1', '1 × Interior Glow Pack — Core'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Underglow + interior glow', note: 'Save $129 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-exterior',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Exterior Kit',
-    subtitle: 'Plate blackout + underglow from the ground up',
-    description: 'One plate, full underbody glow. The exterior-only setup for builds that want presence without touching the cabin.',
-    price: 529, compareAt: 612,
-    image: 'assets/underglow-car.png',
-    stripeLink: '',
-    badge: null,
-    featured: false,
-    page: 'bundles.html',
-    includes: ['1 × Blackout Plate — Single', '1 × Underglow Kit V1'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Single plate + underglow V1', note: 'Save $83 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-pro-glow',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Pro Glow Bundle',
-    subtitle: 'App control, music sync — no plates',
-    description: 'Skip the stealth, max the spectacle. Pro underglow and full-cabin interior with app and music sync — our best lighting-only combo.',
-    price: 579, compareAt: 668,
-    image: 'assets/underglow-pro-kit.png',
-    stripeLink: '',
-    badge: null,
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Underglow Pro', '1 × Interior Glow Pack — Pro'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Pro underglow + pro interior', note: 'Save $89 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-stealth',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Stealth Build Bundle',
-    subtitle: 'Stealth meets style',
-    description: 'Combine cutting-edge blackout technology with LED styling to create a truly unique vehicle build.',
-    price: 399, compareAt: 456,
-    image: 'assets/kit-dual.png',
-    stripeLink: '',
-    badge: null,
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Blackout Plate — Dual', '1 × Sticker Pack 01'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Dual plates + sticker pack', note: 'Save $57 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-ultimate',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Ultimate Show Car Bundle',
-    subtitle: 'Pro lighting + stickers — show-ready',
-    description: 'The ultimate lighting package for enthusiasts who want maximum attention, premium effects, and sticker styling.',
-    price: 449, compareAt: 697,
-    image: 'assets/underglow-car.png',
-    stripeLink: '',
-    badge: 'Most popular',
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Underglow Pro', '1 × Interior Glow Pack — Pro', '1 × Sticker Pack 01'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Pro underglow + pro interior + stickers', note: 'Save $248 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-night-shift',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Night Shift Bundle',
-    subtitle: 'Full car — plates, underglow & cabin glow',
-    description: 'Front and rear blackout plates, V1 underglow, and core interior glow. Everything a night build needs without going Pro.',
-    price: 749, compareAt: 905,
-    image: 'assets/bundle-plates-underglow-interior.png',
-    stripeLink: '',
-    badge: null,
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Blackout Plate — Dual', '1 × Underglow Kit V1', '1 × Interior Glow Pack — Core'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Dual plates + V1 + core interior', note: 'Save $156 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-full-send',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'Full Send Bundle',
-    subtitle: 'Dual plates + Pro underglow + Pro interior',
-    description: 'The complete SPEED·ST transformation — blackout front and rear, Pro underglow, and full-cabin NEON-FLOW interior. One checkout, zero compromises.',
-    price: 899, compareAt: 1095,
-    image: 'assets/bundle-plates-underglow-interior.png',
-    stripeLink: '',
-    badge: 'Flagship',
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Blackout Plate — Dual', '1 × Underglow Pro', '1 × Interior Glow Pack — Pro'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Dual plates + pro lighting', note: 'Save $196 vs separate', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'bundle-god-mode',
-    category: 'bundles', categoryLabel: 'Bundles',
-    title: 'God Mode Bundle',
-    subtitle: 'Everything. Plates, Pro lighting, stickers & banner.',
-    description: 'Our biggest kit — dual plates, Pro underglow, Pro interior, sticker pack and windshield banner. For builds that want it all.',
-    price: 949, compareAt: 1163,
-    image: 'assets/bundle-plates-underglow-interior.png',
-    stripeLink: '',
-    badge: 'Max save',
-    featured: true,
-    page: 'bundles.html',
-    includes: ['1 × Blackout Plate — Dual', '1 × Underglow Pro', '1 × Interior Glow Pack — Pro', '1 × Sticker Pack 01', '1 × Windshield Banner'],
-    sizes: [
-      { id: 'bundle', label: 'Complete bundle', dim: 'Full lineup + stickers', note: 'Save $214 vs separate', stripeLink: '' }
-    ]
   }
 ];
 
+const PRODUCT_ALIASES = {
+  'plates-single': 'plates-blackout',
+  'plates-dual': 'plates-blackout',
+  'underglow-pro': 'underglow-v1',
+  'interior-pro': 'interior-core'
+};
+
 const CATEGORIES = [
   { id: 'all', label: 'Everything' },
-  { id: 'bundles', label: 'Bundles' },
   { id: 'plates', label: 'Blackout Plates' },
   { id: 'underglow', label: 'Underglow' },
   { id: 'interior', label: 'Interior Glow' },
@@ -301,13 +127,55 @@ const CATEGORIES = [
 const FREE_SHIPPING_MIN = 250;
 
 function getProduct(id) {
-  return CATALOG.find(p => p.id === id);
+  const resolved = PRODUCT_ALIASES[id] || id;
+  return CATALOG.find(p => p.id === resolved);
 }
 
-function getStripeLink(product, sizeId) {
+function getActivePack(product, packId) {
+  if (!product?.packs?.length) return null;
+  return product.packs.find(p => p.id === packId) || product.packs[0];
+}
+
+function parseVariantId(product, variantId) {
+  if (!product?.packs?.length) {
+    const size = product.sizes.find(s => s.id === variantId);
+    return size ? { pack: null, size, variantId } : null;
+  }
+  const pack = product.packs.find(p => variantId.startsWith(p.id + '-'));
+  if (!pack) return null;
+  const sizeId = variantId.slice(pack.id.length + 1);
+  const size = pack.sizes.find(s => s.id === sizeId);
+  return size ? { pack, size, variantId } : null;
+}
+
+function getVariantPrice(product, variantId) {
+  const parsed = parseVariantId(product, variantId);
+  if (parsed?.pack) return parsed.pack.price;
+  return product?.price || 0;
+}
+
+function getVariantCompareAt(product, variantId) {
+  const parsed = parseVariantId(product, variantId);
+  if (parsed?.pack) return parsed.pack.compareAt;
+  return product?.compareAt;
+}
+
+function getVariantLabel(product, variantId) {
+  const parsed = parseVariantId(product, variantId);
+  if (!parsed) return variantId;
+  if (parsed.pack) return `${parsed.pack.label} · ${parsed.size.label}`;
+  return parsed.size.label;
+}
+
+function buildVariantId(product, packId, sizeId) {
+  if (product.packs?.length) return `${packId}-${sizeId}`;
+  return sizeId;
+}
+
+function getStripeLink(product, variantId) {
   if (!product) return '';
-  const size = product.sizes.find(s => s.id === sizeId);
-  if (size?.stripeLink) return size.stripeLink;
+  const parsed = parseVariantId(product, variantId);
+  if (parsed?.size?.stripeLink) return parsed.size.stripeLink;
   return product.stripeLink || '';
 }
 
@@ -320,9 +188,18 @@ function discountPct(price, compareAt) {
   return Math.round((1 - price / compareAt) * 100);
 }
 
-/* Shared product card renderer used by shop + category pages */
+function getProductsByLine(category) {
+  return CATALOG.filter(p => p.category === category);
+}
+
 function productCardHTML(p) {
-  const disc = discountPct(p.price, p.compareAt);
+  const fromPrice = p.packs ? Math.min(...p.packs.map(pk => pk.price)) : p.price;
+  const fromCompare = p.packs
+    ? p.packs.find(pk => pk.price === fromPrice)?.compareAt
+    : p.compareAt;
+  const disc = discountPct(fromPrice, fromCompare);
+  const priceLabel = p.packs ? `From ${formatPrice(fromPrice)}` : formatPrice(p.price);
+  const compareLabel = fromCompare ? formatPrice(fromCompare) : '';
   return `
     <a class="pcard" href="product.html?id=${p.id}">
       ${p.badge ? `<span class="pcard-flag">${p.badge}</span>` : ''}
@@ -332,8 +209,8 @@ function productCardHTML(p) {
         <h3>${p.title}</h3>
         <p>${p.subtitle}</p>
         <div class="pcard-foot">
-          <span class="pcard-price">${formatPrice(p.price)}
-            ${p.compareAt ? `<s>${formatPrice(p.compareAt)}</s>` : ''}
+          <span class="pcard-price">${priceLabel}
+            ${compareLabel ? `<s>${compareLabel}</s>` : ''}
           </span>
           ${disc ? `<span class="pcard-save">Save ${disc}%</span>` : ''}
         </div>
@@ -344,10 +221,19 @@ function productCardHTML(p) {
 if (typeof window !== 'undefined') {
   window.CATALOG = CATALOG;
   window.CATEGORIES = CATEGORIES;
+  window.PRODUCT_ALIASES = PRODUCT_ALIASES;
   window.getProduct = getProduct;
+  window.getActivePack = getActivePack;
+  window.parseVariantId = parseVariantId;
+  window.getVariantPrice = getVariantPrice;
+  window.getVariantCompareAt = getVariantCompareAt;
+  window.getVariantLabel = getVariantLabel;
+  window.buildVariantId = buildVariantId;
   window.getStripeLink = getStripeLink;
   window.formatPrice = formatPrice;
   window.discountPct = discountPct;
+  window.getProductsByLine = getProductsByLine;
   window.productCardHTML = productCardHTML;
   window.FREE_SHIPPING_MIN = FREE_SHIPPING_MIN;
 }
+
