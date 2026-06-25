@@ -201,4 +201,3 @@ if (typeof window !== 'undefined') {
   window.productCardHTML = productCardHTML;
   window.FREE_SHIPPING_MIN = FREE_SHIPPING_MIN;
 }
-
