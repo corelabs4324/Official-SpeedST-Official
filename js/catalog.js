@@ -3,7 +3,7 @@
 // Variant-level links override the product-level stripeLink when set.
 
 /**
- * SPEED·ST product catalog — blackout plates, underglow, interior glow, stickers
+ * SPEED·ST product catalog — blackout plates, underglow, interior glow
  */
 const CATALOG = [
   /* ---- BLACKOUT PLATES ---- */
@@ -72,40 +72,6 @@ const CATALOG = [
     sizes: [
       { id: 'core', label: '4-piece kit', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: '' }
     ]
-  },
-
-  /* ---- STICKERS ---- */
-  {
-    id: 'sticker-pack-01',
-    category: 'stickers', categoryLabel: 'Stickers',
-    title: 'Sticker Pack 01',
-    subtitle: '7 die-cut vinyl decals — checker, katakana, skull & more',
-    price: 29, compareAt: null,
-    image: 'assets/sticker-pack.svg',
-    stripeLink: '',
-    badge: null,
-    featured: true,
-    page: 'stickers.html',
-    sizes: [
-      { id: 'matte', label: 'Matte black', dim: 'Matte vinyl, 5-year outdoor', note: 'Stealth finish', stripeLink: '' },
-      { id: 'gloss', label: 'Gloss', dim: 'Gloss vinyl, 5-year outdoor', note: 'High contrast', stripeLink: '' }
-    ]
-  },
-  {
-    id: 'windshield-banner',
-    category: 'stickers', categoryLabel: 'Stickers',
-    title: 'SPEED·ST Windshield Banner',
-    subtitle: '950 × 130 mm sun-strip banner, pre-masked for install',
-    price: 39, compareAt: null,
-    image: 'assets/sticker-pack.svg',
-    stripeLink: '',
-    badge: null,
-    featured: false,
-    page: 'stickers.html',
-    sizes: [
-      { id: 'wob', label: 'White on black', dim: '950 × 130 mm', note: 'Classic', stripeLink: '' },
-      { id: 'bow', label: 'Black on white', dim: '950 × 130 mm', note: 'Inverted', stripeLink: '' }
-    ]
   }
 ];
 
@@ -120,8 +86,7 @@ const CATEGORIES = [
   { id: 'all', label: 'Everything' },
   { id: 'plates', label: 'Blackout Plates' },
   { id: 'underglow', label: 'Underglow' },
-  { id: 'interior', label: 'Interior Glow' },
-  { id: 'stickers', label: 'Stickers' }
+  { id: 'interior', label: 'Interior Glow' }
 ];
 
 const FREE_SHIPPING_MIN = 250;
