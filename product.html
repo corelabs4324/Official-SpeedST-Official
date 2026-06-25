@@ -111,7 +111,7 @@
         <div id="buyWrap">
           <a href="#" class="btn btn-ink buy-btn-full" id="buyBtn" target="_blank" rel="noopener">Buy now ↗</a>
           <button type="button" class="btn btn-ink buy-btn-full" id="buyBtnDisabled" disabled hidden>Payment link coming soon</button>
-          <p class="stripe-note" id="stripeNote">Checkout via Stripe Payment Link — paste URLs in <code>js/catalog.js</code></p>
+          <p class="stripe-note" id="stripeNote">Secure checkout via Stripe. Select your options, then Buy now.</p>
         </div>
       </div>
     </div>
@@ -261,11 +261,11 @@ if (!product) {
       buyBtn.href = link;
       buyBtn.hidden = false;
       disabledBtn.hidden = true;
-      note.textContent = 'Secure checkout via Stripe';
+      note.textContent = 'Secure checkout via Stripe. Select your options, then Buy now.';
     } else {
       buyBtn.hidden = true;
       disabledBtn.hidden = false;
-      note.textContent = 'Payment link coming soon — paste Stripe URL in js/catalog.js (see STRIPE-LINKS.md)';
+      note.textContent = 'Payment link coming soon for this option.';
     }
   }
 
@@ -367,4 +367,3 @@ if (!product) {
 </script>
 </body>
 </html>
-
