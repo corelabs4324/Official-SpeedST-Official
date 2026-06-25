@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/theme.css">
-<script src="js/asset-fallback.js"></script>
-<link rel="stylesheet" href="css/popup.css">
 <link rel="stylesheet" href="css/line-page.css">
 <style>
   .event { display: grid; grid-template-columns: 110px 1fr auto; gap: 24px; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--line); }
@@ -54,22 +52,21 @@
   <a href="index.html" class="mark sm"><span class="speed">SPEED</span><span class="st">·ST</span></a>
   <div class="nav-links">
     <a href="shop.html">Shop all</a>
-    <a href="bundles.html">Bundles</a>
     <a href="blackout-plates.html">Blackout Plates</a>
     <a href="underglow.html">Underglow</a>
     <a href="interior-glow.html">Interior Glow</a>
-    <a href="stickers.html">Stickers</a>
+    <a href="product.html?id=speedst-banner">Banner</a>
     <a href="meets.html" class="on">Meets &amp; Collabs</a>
   </div>
-  <a href="cart.html" class="cart-pill">Cart · <span class="count" data-cart-count>0</span></a>
+  <a href="shop.html" class="btn btn-ink" style="padding:10px 18px;font-size:12px">Shop ↗</a>
 </div></nav>
 
 <header class="line-hero">
-  <img class="bg" src="assets/meets-hero.png" alt="">
+  <img class="bg" src="assets/meets-hero.svg" alt="">
   <div class="wrap in">
     <div class="crumb"><a href="index.html">Home</a> / Meets &amp; Collabs</div>
     <h1 class="display">Meets &amp;<br>Collabs</h1>
-    <p>Monthly night meets, build features and brand partnerships. This is the part of SPEED·ST that doesn't fit in a box.</p>
+    <p>Night meets, build features and brand partnerships. This is the part of SPEED·ST that doesn't fit in a box.</p>
   </div>
 </header>
 <div class="checker"></div>
@@ -78,84 +75,18 @@
 <section class="line-pad" id="events">
   <div class="wrap">
     <div class="line-head">
-      <h2 class="display">Upcoming meets</h2>
-      <p>Free entry, all builds welcome. Underglow demo wall and sticker giveaways at every meet.</p>
-    </div>
-
-    <div class="event">
-      <div class="date"><div class="d">27</div><div class="m">Jun</div></div>
-      <div>
-        <div class="meta">Sydney · Alexandria industrial precinct · 8 PM – late</div>
-        <h3>Night Shift 014</h3>
-        <p>Monthly flagship meet. 200+ cars, rolling underglow demos, live photographer wall. RSVP for gate code.</p>
-      </div>
-      <span class="tag live">RSVP open</span>
-    </div>
-
-    <div class="event">
-      <div class="date"><div class="d">11</div><div class="m">Jul</div></div>
-      <div>
-        <div class="meta">Melbourne · Docklands · 7:30 PM</div>
-        <h3>Blackout Run MEL</h3>
-        <p>Cruise + meet. Convoy leaves Docklands at 8 PM sharp. Blackout plate owners up front.</p>
-      </div>
-      <span class="tag">Soon</span>
-    </div>
-
-    <div class="event">
-      <div class="date"><div class="d">25</div><div class="m">Jul</div></div>
-      <div>
-        <div class="meta">Brisbane · Eagle Farm · 8 PM</div>
-        <h3>Night Shift BNE 002</h3>
-        <p>Second Brisbane round. Dyno comp, glow-off judged by the crew, podium gets next year's drops free.</p>
-      </div>
-      <span class="tag">Soon</span>
+      <h2 class="display">Upcoming meet</h2>
+      <p>Free entry, all builds welcome. Underglow demo wall on site.</p>
     </div>
 
     <div class="event" style="border-bottom:none">
-      <div class="date"><div class="d">08</div><div class="m">Aug</div></div>
+      <div class="date"><div class="d">Sat</div><div class="m">8 PM</div></div>
       <div>
-        <div class="meta">Sydney · Location dropped 24h before · invite only</div>
-        <h3>The Blackout</h3>
-        <p>Invite-only night shoot. Twenty builds, pro photographers, zero phones. Apply through the collab form.</p>
+        <div class="meta">Netball courts · Fishermans Road</div>
+        <h3>This Saturday</h3>
+        <p>Night meet — bring your build, check the gear, hang with the crew. See you at 8.</p>
       </div>
-      <span class="tag">Invite</span>
-    </div>
-  </div>
-</section>
-
-<section class="dark">
-  <div class="wrap line-pad">
-    <div class="line-band">
-      <img src="assets/meets-hero.png" alt="SPEED·ST booth at indoor car meet">
-      <div>
-        <span class="sec-tag">We show up</span>
-        <h2 class="display">Not just online.<br>On the ground.</h2>
-        <ul>
-          <li>Monthly meets across Sydney, Melbourne and Brisbane</li>
-          <li>Live underglow demos and sticker drops at every event</li>
-          <li>Bring your build — get featured on the wall</li>
-        </ul>
-        <a href="meets.html#events" class="btn btn-wht">See upcoming meets ↗</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURED BUILDS -->
-<section class="dark" id="featured-builds">
-  <div class="wrap line-pad">
-    <div class="line-head">
-      <div>
-        <span class="sec-tag">Featured builds</span>
-        <h2 class="display">From the wall</h2>
-      </div>
-      <p class="muted" style="max-width:380px;font-size:14px;margin:0">Shot at our meets. Tag #SPEEDST to get your build on the wall.</p>
-    </div>
-    <div class="builds">
-      <div class="build"><img src="assets/underglow-car.png" alt="BMW M3 with orange underglow"><div class="cap"><h4>M3 Touring</h4><span>Underglow Pro · Member build</span></div></div>
-      <div class="build"><img src="assets/meets-hero.png" alt="SPEED·ST booth at night meet"><div class="cap"><h4>The Lineup</h4><span>Night Shift · Sydney</span></div></div>
-      <div class="build"><img src="assets/interior-glow-car.png" alt="Interior glow in NSX"><div class="cap"><h4>Cabin Check</h4><span>Interior Pro · Member build</span></div></div>
+      <span class="tag live">Upcoming</span>
     </div>
   </div>
 </section>
@@ -170,7 +101,7 @@
       <div class="collab-types">
         <div class="collab-type"><h4>Build features</h4><p>Get your car shot by our crew and featured across the site and socials.</p></div>
         <div class="collab-type"><h4>Club partnerships</h4><p>Co-hosted meets, member discount codes and demo gear for your events.</p></div>
-        <div class="collab-type"><h4>Brand collabs</h4><p>Limited sticker runs, co-branded drops and event sponsorships.</p></div>
+        <div class="collab-type"><h4>Brand collabs</h4><p>Co-branded drops and event sponsorships.</p></div>
         <div class="collab-type"><h4>Creators</h4><p>Kits for content. Install videos, night shoots, honest reviews.</p></div>
       </div>
     </div>
@@ -187,7 +118,6 @@
           <option>Club partnership</option>
           <option>Brand collab</option>
           <option>Creator / content</option>
-          <option>The Blackout — invite application</option>
         </select>
       </div>
       <div class="cfield"><label for="cmsg">The pitch</label><textarea id="cmsg" rows="4" required placeholder="Tell us about the build, the club, or the idea."></textarea></div>
@@ -211,7 +141,5 @@
     e.target.querySelector('button').disabled = true;
   });
 </script>
-<script src="js/cart.js"></script>
-<script src="js/popup.js"></script>
 </body>
 </html>
