@@ -1,6 +1,6 @@
-// Stripe Price IDs live in data/stripe-prices.json (format: productId:variantId → price_…)
-// Cart checkout uses Stripe Checkout Sessions via /api/create-checkout (deploy on Vercel).
-// See STRIPE-SETUP.md — do NOT use Payment Links for multi-item checkout.
+// Stripe Payment Links live in sizes[].stripeLink (one per variant).
+// product.stripeLink is an optional fallback when a product has no size variants.
+// See STRIPE-LINKS-MAP.txt for the full product → link mapping.
 
 /**
  * SPEED·ST product catalog — blackout plates, underglow, interior glow, banner
@@ -23,17 +23,17 @@ const CATALOG = [
         id: 'single', label: 'Single pack',
         price: 249.99,
         sizes: [
-          { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: '' },
-          { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: '' }
+          { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: 'https://buy.stripe.com/fZu14p0KO8WEdYu7zC9bO0k' },
+          { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: 'https://buy.stripe.com/3cIdRb0KO0q83jQ9HK9bO0l' }
         ]
       },
       {
         id: 'dual', label: 'Dual pack',
         price: 399,
         sizes: [
-          { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: '' },
-          { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: '' },
-          { id: 'mixed', label: 'Mixed pair', dim: '1 × Standard + 1 × Slimline', note: 'Front/rear mix', mixedNote: true, stripeLink: '' }
+          { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: 'https://buy.stripe.com/9B600l2SW2yg2fMcTW9bO0m' },
+          { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: 'https://buy.stripe.com/cNi3cxalo0q8cUqaLO9bO0n' },
+          { id: 'mixed', label: 'Mixed pair', dim: '1 × Standard + 1 × Slimline', note: 'Front/rear mix', mixedNote: true, stripeLink: 'https://buy.stripe.com/9B64gB3X03Ck2fMaLO9bO0o' }
         ]
       }
     ]
@@ -52,8 +52,8 @@ const CATALOG = [
     featured: true,
     page: 'underglow.html',
     sizes: [
-      { id: 'sedan', label: 'Sedan / Hatch', dim: '2 × 120 cm + 2 × 90 cm', note: 'Most sedans & hatches', stripeLink: '' },
-      { id: 'suv', label: 'SUV / Ute', dim: '2 × 150 cm + 2 × 120 cm', note: 'Long wheelbase', stripeLink: '' }
+      { id: 'sedan', label: 'Sedan / Hatch', dim: '2 × 120 cm + 2 × 90 cm', note: 'Most sedans & hatches', stripeLink: 'https://buy.stripe.com/14A8wR3X05Ks6w2g689bO0p' },
+      { id: 'suv', label: 'SUV / Ute', dim: '2 × 150 cm + 2 × 120 cm', note: 'Long wheelbase', stripeLink: 'https://buy.stripe.com/aFaeVf0KO8WE4nUbPS9bO0q' }
     ]
   },
 
@@ -70,7 +70,7 @@ const CATALOG = [
     featured: true,
     page: 'interior-glow.html',
     sizes: [
-      { id: 'core', label: '4-piece kit', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: '' }
+      { id: 'core', label: '4-piece kit', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: 'https://buy.stripe.com/eVq8wR5148WE6w22fi9bO0r' }
     ]
   },
 
