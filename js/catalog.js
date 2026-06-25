@@ -1,9 +1,9 @@
-// PASTE STRIPE PAYMENT LINKS HERE — one per product (or per variant in sizes[].stripeLink)
-// Create links in Stripe Dashboard → Payment Links. Paste the full https://buy.stripe.com/… URL.
-// Variant-level links override the product-level stripeLink when set.
+// Stripe Price IDs live in data/stripe-prices.json (format: productId:variantId → price_…)
+// Cart checkout uses Stripe Checkout Sessions via /api/create-checkout (deploy on Vercel).
+// See STRIPE-SETUP.md — do NOT use Payment Links for multi-item checkout.
 
 /**
- * SPEED·ST product catalog — blackout plates, underglow, interior glow
+ * SPEED·ST product catalog — blackout plates, underglow, interior glow, banner
  */
 const CATALOG = [
   /* ---- BLACKOUT PLATES ---- */
@@ -12,8 +12,8 @@ const CATALOG = [
     category: 'plates', categoryLabel: 'Blackout Plates',
     title: 'Blackout Plate™',
     subtitle: 'Remote-controlled blackout overlay — single or dual pack, standard or slimline fit',
-    price: 263, compareAt: 458,
-    image: 'assets/kit-dual.svg',
+    price: 249.99,
+    image: 'assets/kit-dual.png',
     stripeLink: '',
     badge: null,
     featured: true,
@@ -21,7 +21,7 @@ const CATALOG = [
     packs: [
       {
         id: 'single', label: 'Single pack',
-        price: 263, compareAt: 458,
+        price: 249.99,
         sizes: [
           { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: '' },
           { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: '' }
@@ -29,7 +29,7 @@ const CATALOG = [
       },
       {
         id: 'dual', label: 'Dual pack',
-        price: 427, compareAt: 725,
+        price: 399,
         sizes: [
           { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: '' },
           { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: '' },
@@ -46,7 +46,7 @@ const CATALOG = [
     title: 'Underglow Kit',
     subtitle: '4-piece RGB aluminium bars, RF remote, IP68',
     price: 349, compareAt: 449,
-    image: 'assets/underglow-kit.svg',
+    image: 'assets/underglow-kit.png',
     stripeLink: '',
     badge: null,
     featured: true,
@@ -63,14 +63,33 @@ const CATALOG = [
     category: 'interior', categoryLabel: 'Interior Glow',
     title: 'Interior Glow Pack',
     subtitle: '2 footwell bars + 2 ambient strips, USB-C powered',
-    price: 129, compareAt: 179,
-    image: 'assets/interior-glow-kit.svg',
+    price: 99,
+    image: 'assets/interior-glow-kit.png',
     stripeLink: '',
     badge: null,
     featured: true,
     page: 'interior-glow.html',
     sizes: [
       { id: 'core', label: '4-piece kit', dim: '2 × footwell + 2 × dash strips', note: 'Front cabin', stripeLink: '' }
+    ]
+  },
+
+  /* ---- WINDSHIELD BANNER ---- */
+  {
+    id: 'speedst-banner',
+    category: 'banner', categoryLabel: 'Banner',
+    title: 'SPEED·ST Windshield Banner',
+    subtitle: 'Cut-to-size vinyl banner — preset or custom dimensions',
+    price: 49,
+    image: 'assets/banner.png',
+    stripeLink: '',
+    badge: null,
+    featured: false,
+    page: 'product.html',
+    sizes: [
+      { id: 'std', label: 'Standard windshield', dim: '950 × 130 mm', note: 'Most sedans & hatches', stripeLink: '' },
+      { id: 'wide', label: 'Wide', dim: '1200 × 150 mm', note: 'Wider windscreens', stripeLink: '' },
+      { id: 'custom', label: 'Custom size', dim: 'Enter your dimensions', note: 'Cut to your specs', customNote: true, stripeLink: '' }
     ]
   }
 ];
@@ -79,14 +98,16 @@ const PRODUCT_ALIASES = {
   'plates-single': 'plates-blackout',
   'plates-dual': 'plates-blackout',
   'underglow-pro': 'underglow-v1',
-  'interior-pro': 'interior-core'
+  'interior-pro': 'interior-core',
+  'windshield-banner': 'speedst-banner'
 };
 
 const CATEGORIES = [
   { id: 'all', label: 'Everything' },
   { id: 'plates', label: 'Blackout Plates' },
   { id: 'underglow', label: 'Underglow' },
-  { id: 'interior', label: 'Interior Glow' }
+  { id: 'interior', label: 'Interior Glow' },
+  { id: 'banner', label: 'Banner' }
 ];
 
 const FREE_SHIPPING_MIN = 250;
@@ -145,7 +166,12 @@ function getStripeLink(product, variantId) {
 }
 
 function formatPrice(n) {
-  return '$' + n.toFixed(0);
+  if (n == null || Number.isNaN(n)) return '$0';
+  const rounded = Math.round(n * 100) / 100;
+  if (Math.abs(rounded - Math.round(rounded)) < 0.001) {
+    return '$' + Math.round(rounded);
+  }
+  return '$' + rounded.toFixed(2);
 }
 
 function discountPct(price, compareAt) {
@@ -157,6 +183,7 @@ function getProductsByLine(category) {
   return CATALOG.filter(p => p.category === category);
 }
 
+/* Shared product card renderer used by shop + category pages */
 function productCardHTML(p) {
   const fromPrice = p.packs ? Math.min(...p.packs.map(pk => pk.price)) : p.price;
   const fromCompare = p.packs
