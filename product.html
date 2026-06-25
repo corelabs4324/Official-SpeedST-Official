@@ -66,7 +66,7 @@
     <a href="blackout-plates.html">Blackout Plates</a>
     <a href="underglow.html">Underglow</a>
     <a href="interior-glow.html">Interior Glow</a>
-    <a href="stickers.html">Stickers</a>
+    <a href="product.html?id=speedst-banner">Banner</a>
     <a href="meets.html">Meets &amp; Collabs</a>
   </div>
   <a href="shop.html" class="btn btn-ink" style="padding:10px 18px;font-size:12px">Shop ↗</a>
@@ -98,9 +98,9 @@
         <span class="field-label" id="sizeLabel">Select option</span>
         <div class="size-opts" id="sizeOpts"></div>
 
-        <div class="mixed-note" id="mixedNoteWrap">
-          <label class="field-label" for="mixedNote">Mixed pair note (optional)</label>
-          <input type="text" id="mixedNote" placeholder="e.g. Front slimline, rear standard">
+        <div class="mixed-note" id="variantNoteWrap">
+          <label class="field-label" for="variantNote" id="variantNoteLabel">Note</label>
+          <input type="text" id="variantNote" placeholder="">
         </div>
 
         <div class="includes" id="includesBox">
@@ -140,15 +140,19 @@ const INCLUDES = {
   },
   'underglow-v1': ['4 × aluminium RGB light bars', 'RF remote (16M colours)', 'Fused plug-and-play loom', 'Mount brackets + VHB tape'],
   'interior-core': ['2 × footwell light bars', '2 × ambient dash strips', 'USB-C controller + remote', '12V accessory adapter'],
-  'sticker-pack-01': ['7 × die-cut vinyl decals', 'Application squeegee', 'Alcohol prep wipe'],
-  'windshield-banner': ['1 × 950 × 130 mm banner', 'Pre-masked transfer layer', 'Guide tabs + squeegee']
+  'speedst-banner': ['1 × cut-to-size vinyl banner', 'SPEED·ST logo artwork', 'Application squeegee', 'Install guide']
 };
 
 const GALLERY_EXTRA = {
   plates: ['assets/mode-comparison.svg', 'assets/lifestyle-rear.svg', 'assets/feature-detail.svg'],
   underglow: ['assets/underglow-car.svg', 'assets/underglow-kit.svg', 'assets/meets-hero.svg'],
   interior: ['assets/interior-glow-kit.svg', 'assets/underglow-car.svg', 'assets/meets-hero.svg'],
-  stickers: ['assets/sticker-pack.svg', 'assets/lifestyle-rear.svg', 'assets/meets-hero.svg']
+  banner: ['assets/banner.svg', 'assets/meets-hero.svg', 'assets/lifestyle-rear.svg']
+};
+
+const VARIANT_NOTE = {
+  mixedNote: { label: 'Mixed pair note (optional)', placeholder: 'e.g. Front slimline, rear standard' },
+  customNote: { label: 'Custom dimensions', placeholder: 'e.g. 1100 × 140 mm' }
 };
 
 if (!product) {
@@ -221,10 +225,26 @@ if (!product) {
     return sizeOpts.querySelector('.size-opt.active');
   }
 
-  function updateMixedNote() {
+  function activeSizeOption() {
     const active = getActiveSizeEl();
-    document.getElementById('mixedNoteWrap').classList.toggle('show', active?.dataset.mixed === '1');
-    if (active?.dataset.mixed !== '1') document.getElementById('mixedNote').value = '';
+    const sizeId = active?.dataset.id;
+    return currentSizes().find(s => s.id === sizeId) || null;
+  }
+
+  function updateVariantNote() {
+    const size = activeSizeOption();
+    const wrap = document.getElementById('variantNoteWrap');
+    const label = document.getElementById('variantNoteLabel');
+    const input = document.getElementById('variantNote');
+    const cfg = size?.mixedNote ? VARIANT_NOTE.mixedNote : size?.customNote ? VARIANT_NOTE.customNote : null;
+    if (cfg) {
+      wrap.classList.add('show');
+      label.textContent = cfg.label;
+      input.placeholder = cfg.placeholder;
+    } else {
+      wrap.classList.remove('show');
+      input.value = '';
+    }
   }
 
   function updateBuyButton() {
@@ -268,7 +288,7 @@ if (!product) {
         });
         opt.classList.add('active');
         opt.setAttribute('aria-checked', 'true');
-        updateMixedNote();
+        updateVariantNote();
         updateBuyButton();
       };
       opt.addEventListener('click', pick);
@@ -292,13 +312,13 @@ if (!product) {
     }
     sizeOpts.innerHTML = sizes.map((s, i) => `
       <div class="size-opt ${i === 0 ? 'active' : ''}" tabindex="0" role="radio" aria-checked="${i === 0}"
-        data-id="${s.id}" data-label="${s.label}" data-dim="${s.dim}" data-mixed="${s.mixedNote ? '1' : '0'}">
+        data-id="${s.id}" data-label="${s.label}" data-dim="${s.dim}">
         <span class="name">${s.label}</span>
         <span class="dim">${s.dim}</span>
         ${s.note ? `<span class="note">${s.note}</span>` : ''}
       </div>`).join('');
     bindSizeOpts();
-    updateMixedNote();
+    updateVariantNote();
     updateIncludes();
     updateBuyButton();
   }
