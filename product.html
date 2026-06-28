@@ -95,6 +95,9 @@
         <span class="field-label" id="packLabel" hidden>Select pack</span>
         <div class="size-opts" id="packOpts" hidden></div>
 
+        <span class="field-label" id="countryLabel" hidden>Select country</span>
+        <div class="size-opts" id="countryOpts" hidden></div>
+
         <span class="field-label" id="sizeLabel">Select option</span>
         <div class="size-opts" id="sizeOpts"></div>
 
@@ -151,7 +154,7 @@ const GALLERY_EXTRA = {
 };
 
 const VARIANT_NOTE = {
-  mixedNote: { label: 'Mixed pair note (optional)', placeholder: 'e.g. Front slimline, rear standard' },
+  mixedNote: { label: 'Mixed pair note (optional)', placeholder: 'e.g. Front AU slimline, rear AU standard' },
   customNote: { label: 'Custom dimensions', placeholder: 'e.g. 1100 × 140 mm' }
 };
 
@@ -191,17 +194,27 @@ if (!product) {
   const sizeLabel = document.getElementById('sizeLabel');
   const packOpts = document.getElementById('packOpts');
   const packLabel = document.getElementById('packLabel');
+  const countryOpts = document.getElementById('countryOpts');
+  const countryLabel = document.getElementById('countryLabel');
   const hasPacks = product.packs?.length > 0;
+  const hasCountries = product.countries?.length > 0;
   let activePackId = params.get('pack') || (hasPacks ? product.packs[0].id : null);
   if (hasPacks && !product.packs.some(p => p.id === activePackId)) activePackId = product.packs[0].id;
+  let activeCountryId = params.get('country') || (hasCountries ? product.countries[0].id : null);
+  if (hasCountries && !product.countries.some(c => c.id === activeCountryId)) activeCountryId = product.countries[0].id;
 
   function currentPack() {
     return hasPacks ? getActivePack(product, activePackId) : null;
   }
 
+  function currentCountry() {
+    return hasCountries ? getActiveCountry(product, activeCountryId) : null;
+  }
+
   function currentSizes() {
+    if (hasCountries) return getCountrySizes(product, activeCountryId, activePackId);
     const pack = currentPack();
-    return pack ? pack.sizes : product.sizes;
+    return pack?.sizes || product.sizes;
   }
 
   function updatePrice() {
@@ -298,6 +311,11 @@ if (!product) {
     });
   }
 
+  function sizeDimLabel(s) {
+    if (activePackId === 'dual' && s.id !== 'mixed') return `2 × ${s.dim}`;
+    return s.dim;
+  }
+
   function renderSizes() {
     const sizes = currentSizes();
     const singleSize = sizes.length === 1;
@@ -307,14 +325,16 @@ if (!product) {
     } else {
       sizeLabel.hidden = false;
       sizeOpts.hidden = false;
-      sizeLabel.textContent = hasPacks ? 'Select size' : 'Select option';
+      sizeLabel.textContent = hasCountries
+        ? (activePackId === 'dual' ? 'Select plate size (both same, or mixed)' : 'Select plate size')
+        : (hasPacks ? 'Select size' : 'Select option');
       sizeOpts.className = 'size-opts' + (sizes.length === 2 ? ' multi-2' : sizes.length >= 3 ? ' multi-3' : '');
     }
     sizeOpts.innerHTML = sizes.map((s, i) => `
       <div class="size-opt ${i === 0 ? 'active' : ''}" tabindex="0" role="radio" aria-checked="${i === 0}"
         data-id="${s.id}" data-label="${s.label}" data-dim="${s.dim}">
         <span class="name">${s.label}</span>
-        <span class="dim">${s.dim}</span>
+        <span class="dim">${sizeDimLabel(s)}</span>
         ${s.note ? `<span class="note">${s.note}</span>` : ''}
       </div>`).join('');
     bindSizeOpts();
@@ -323,10 +343,44 @@ if (!product) {
     updateBuyButton();
   }
 
+  function renderCountries() {
+    if (!hasCountries) {
+      countryLabel.hidden = true;
+      countryOpts.hidden = true;
+      return;
+    }
+    countryLabel.hidden = false;
+    countryOpts.hidden = false;
+    countryOpts.className = 'size-opts multi-3';
+    countryOpts.innerHTML = product.countries.map(c => `
+      <div class="size-opt ${c.id === activeCountryId ? 'active' : ''}" tabindex="0" role="radio"
+        aria-checked="${c.id === activeCountryId}" data-country-id="${c.id}">
+        <span class="name">${c.label}</span>
+        <span class="dim">${c.sizes.length} size${c.sizes.length === 1 ? '' : 's'}</span>
+      </div>`).join('');
+    countryOpts.querySelectorAll('.size-opt').forEach(opt => {
+      const pick = () => {
+        activeCountryId = opt.dataset.countryId;
+        countryOpts.querySelectorAll('.size-opt').forEach(o => {
+          o.classList.remove('active');
+          o.setAttribute('aria-checked', 'false');
+        });
+        opt.classList.add('active');
+        opt.setAttribute('aria-checked', 'true');
+        renderSizes();
+      };
+      opt.addEventListener('click', pick);
+      opt.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
+      });
+    });
+  }
+
   function renderPacks() {
     if (!hasPacks) {
       packLabel.hidden = true;
       packOpts.hidden = true;
+      renderCountries();
       renderSizes();
       updatePrice();
       return;
@@ -350,6 +404,7 @@ if (!product) {
         opt.classList.add('active');
         opt.setAttribute('aria-checked', 'true');
         updatePrice();
+        renderCountries();
         renderSizes();
       };
       opt.addEventListener('click', pick);
@@ -357,6 +412,7 @@ if (!product) {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
       });
     });
+    renderCountries();
     renderSizes();
     updatePrice();
   }
