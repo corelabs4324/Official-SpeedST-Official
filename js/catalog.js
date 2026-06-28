@@ -5,13 +5,33 @@
 /**
  * SPEED·ST product catalog — blackout plates, underglow, interior glow, banner
  */
+const PLATES_STRIPE_LINKS = {
+  single: {
+    std: 'https://buy.stripe.com/fZu14p0KO8WEdYu7zC9bO0k',
+    slim: 'https://buy.stripe.com/3cIdRb0KO0q83jQ9HK9bO0l'
+  },
+  dual: {
+    stdPair: 'https://buy.stripe.com/9B600l2SW2yg2fMcTW9bO0m',
+    slimPair: 'https://buy.stripe.com/cNi3cxalo0q8cUqaLO9bO0n',
+    mixed: 'https://buy.stripe.com/9B64gB3X03Ck2fMaLO9bO0o'
+  }
+};
+
+const PLATES_MIXED_SIZE = {
+  id: 'mixed',
+  label: 'Mixed pair',
+  dim: 'Different sizes per plate',
+  note: 'Specify sizes in note below',
+  mixedNote: true
+};
+
 const CATALOG = [
   /* ---- BLACKOUT PLATES ---- */
   {
     id: 'plates-blackout',
     category: 'plates', categoryLabel: 'Blackout Plates',
     title: 'Blackout Plate™',
-    subtitle: 'Remote-controlled blackout overlay — single or dual pack, standard or slimline fit',
+    subtitle: 'Remote-controlled blackout overlay — single or dual pack, sized for your country',
     price: 249.99,
     image: 'assets/kit-dual.png',
     stripeLink: '',
@@ -19,21 +39,51 @@ const CATALOG = [
     featured: true,
     page: 'blackout-plates.html',
     packs: [
+      { id: 'single', label: 'Single pack', price: 249.99 },
+      { id: 'dual', label: 'Dual pack', price: 399 }
+    ],
+    countries: [
       {
-        id: 'single', label: 'Single pack',
-        price: 249.99,
+        id: 'au', label: 'Australia',
         sizes: [
-          { id: 'std', label: 'Standard', dim: '372 × 134 mm', note: 'Most AU rear plates', stripeLink: 'https://buy.stripe.com/fZu14p0KO8WEdYu7zC9bO0k' },
-          { id: 'slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', stripeLink: 'https://buy.stripe.com/3cIdRb0KO0q83jQ9HK9bO0l' }
+          { id: 'au-std', label: 'Standard', dim: '372 × 134 mm', note: 'Most rear plates', vehicle: 'car' },
+          { id: 'au-slim', label: 'Slimline', dim: '372 × 100 mm', note: 'Compact front plates', vehicle: 'car' },
+          { id: 'au-moto', label: 'Motorbike', dim: '270 × 100 mm', note: 'Motorcycle & scooter', vehicle: 'motorcycle' }
         ]
       },
       {
-        id: 'dual', label: 'Dual pack',
-        price: 399,
+        id: 'us', label: 'United States',
         sizes: [
-          { id: 'std-pair', label: 'Standard pair', dim: '2 × 372 × 134 mm', note: 'Both standard', stripeLink: 'https://buy.stripe.com/9B600l2SW2yg2fMcTW9bO0m' },
-          { id: 'slim-pair', label: 'Slimline pair', dim: '2 × 372 × 100 mm', note: 'Both slimline', stripeLink: 'https://buy.stripe.com/cNi3cxalo0q8cUqaLO9bO0n' },
-          { id: 'mixed', label: 'Mixed pair', dim: '1 × Standard + 1 × Slimline', note: 'Front/rear mix', mixedNote: true, stripeLink: 'https://buy.stripe.com/9B64gB3X03Ck2fMaLO9bO0o' }
+          { id: 'us-std', label: 'Standard', dim: '304 × 152 mm (12 × 6″)', note: 'Most passenger vehicles', vehicle: 'car' },
+          { id: 'us-moto', label: 'Motorbike', dim: '178 × 102 mm (7 × 4″)', note: 'Common motorcycle size', vehicle: 'motorcycle' }
+        ]
+      },
+      {
+        id: 'uk', label: 'United Kingdom',
+        sizes: [
+          { id: 'uk-std', label: 'Standard', dim: '520 × 111 mm', note: 'UK rear plate', vehicle: 'car' },
+          { id: 'uk-moto', label: 'Motorbike', dim: '228 × 178 mm', note: 'Two-line motorcycle', vehicle: 'motorcycle' }
+        ]
+      },
+      {
+        id: 'nz', label: 'New Zealand',
+        sizes: [
+          { id: 'nz-std', label: 'Standard', dim: '360 × 125 mm', note: 'Most NZ plates', vehicle: 'car' },
+          { id: 'nz-moto', label: 'Motorbike', dim: '260 × 100 mm', note: 'Motorcycle & scooter', vehicle: 'motorcycle' }
+        ]
+      },
+      {
+        id: 'eu', label: 'Europe / EU',
+        sizes: [
+          { id: 'eu-std', label: 'Standard', dim: '520 × 110 mm', note: 'Most EU member states', vehicle: 'car' },
+          { id: 'eu-moto', label: 'Motorbike', dim: '180 × 130 mm', note: 'Common EU motorcycle', vehicle: 'motorcycle' }
+        ]
+      },
+      {
+        id: 'ca', label: 'Canada',
+        sizes: [
+          { id: 'ca-std', label: 'Standard', dim: '304 × 152 mm (12 × 6″)', note: 'Most provinces', vehicle: 'car' },
+          { id: 'ca-moto', label: 'Motorbike', dim: '178 × 102 mm (7 × 4″)', note: 'Common motorcycle size', vehicle: 'motorcycle' }
         ]
       }
     ]
@@ -122,16 +172,62 @@ function getActivePack(product, packId) {
   return product.packs.find(p => p.id === packId) || product.packs[0];
 }
 
+function getActiveCountry(product, countryId) {
+  if (!product?.countries?.length) return null;
+  return product.countries.find(c => c.id === countryId) || product.countries[0];
+}
+
+function findCountrySize(product, sizeId) {
+  if (!product?.countries?.length) return null;
+  if (sizeId === 'mixed') return { country: null, size: PLATES_MIXED_SIZE };
+  for (const country of product.countries) {
+    const size = country.sizes.find(s => s.id === sizeId);
+    if (size) return { country, size };
+  }
+  return null;
+}
+
+function getCountrySizes(product, countryId, packId) {
+  const country = getActiveCountry(product, countryId);
+  if (!country) return [];
+  const sizes = [...country.sizes];
+  if (packId === 'dual') sizes.push(PLATES_MIXED_SIZE);
+  return sizes;
+}
+
+function resolvePlatesStripeLink(pack, size) {
+  if (!pack || !size) return '';
+  if (size.id === 'mixed') return PLATES_STRIPE_LINKS.dual.mixed;
+  if (pack.id === 'single') {
+    return size.id.endsWith('-slim')
+      ? PLATES_STRIPE_LINKS.single.slim
+      : PLATES_STRIPE_LINKS.single.std;
+  }
+  return size.id.endsWith('-slim')
+    ? PLATES_STRIPE_LINKS.dual.slimPair
+    : PLATES_STRIPE_LINKS.dual.stdPair;
+}
+
 function parseVariantId(product, variantId) {
   if (!product?.packs?.length) {
     const size = product.sizes.find(s => s.id === variantId);
-    return size ? { pack: null, size, variantId } : null;
+    return size ? { pack: null, size, country: null, variantId } : null;
   }
   const pack = product.packs.find(p => variantId.startsWith(p.id + '-'));
   if (!pack) return null;
-  const sizeId = variantId.slice(pack.id.length + 1);
-  const size = pack.sizes.find(s => s.id === sizeId);
-  return size ? { pack, size, variantId } : null;
+  const rest = variantId.slice(pack.id.length + 1);
+
+  if (product.countries?.length) {
+    if (rest === 'mixed') {
+      return { pack, size: PLATES_MIXED_SIZE, country: null, variantId };
+    }
+    const sizeId = rest.endsWith('-pair') ? rest.slice(0, -5) : rest;
+    const found = findCountrySize(product, sizeId);
+    return found ? { pack, size: found.size, country: found.country, variantId } : null;
+  }
+
+  const size = pack.sizes?.find(s => s.id === rest);
+  return size ? { pack, size, country: null, variantId } : null;
 }
 
 function getVariantPrice(product, variantId) {
@@ -149,18 +245,30 @@ function getVariantCompareAt(product, variantId) {
 function getVariantLabel(product, variantId) {
   const parsed = parseVariantId(product, variantId);
   if (!parsed) return variantId;
+  if (parsed.size.id === 'mixed') return `${parsed.pack.label} · Mixed pair`;
+  if (parsed.country) {
+    const sizeLabel = parsed.pack?.id === 'dual'
+      ? `${parsed.size.label} pair`
+      : parsed.size.label;
+    return `${parsed.pack.label} · ${parsed.country.label} · ${sizeLabel}`;
+  }
   if (parsed.pack) return `${parsed.pack.label} · ${parsed.size.label}`;
   return parsed.size.label;
 }
 
 function buildVariantId(product, packId, sizeId) {
-  if (product.packs?.length) return `${packId}-${sizeId}`;
-  return sizeId;
+  if (!product.packs?.length) return sizeId;
+  if (sizeId === 'mixed') return `${packId}-mixed`;
+  if (packId === 'dual') return `${packId}-${sizeId}-pair`;
+  return `${packId}-${sizeId}`;
 }
 
 function getStripeLink(product, variantId) {
   if (!product) return '';
   const parsed = parseVariantId(product, variantId);
+  if (product.countries?.length && parsed?.pack) {
+    return resolvePlatesStripeLink(parsed.pack, parsed.size);
+  }
   if (parsed?.size?.stripeLink) return parsed.size.stripeLink;
   return product.stripeLink || '';
 }
@@ -216,6 +324,9 @@ if (typeof window !== 'undefined') {
   window.PRODUCT_ALIASES = PRODUCT_ALIASES;
   window.getProduct = getProduct;
   window.getActivePack = getActivePack;
+  window.getActiveCountry = getActiveCountry;
+  window.findCountrySize = findCountrySize;
+  window.getCountrySizes = getCountrySizes;
   window.parseVariantId = parseVariantId;
   window.getVariantPrice = getVariantPrice;
   window.getVariantCompareAt = getVariantCompareAt;
