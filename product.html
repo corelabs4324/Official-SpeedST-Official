@@ -55,6 +55,9 @@
   .buy-btn-full:disabled { opacity: .4; cursor: not-allowed; }
   .stripe-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--smoke); text-align: center; margin-top: 12px; line-height: 1.5; }
   .not-found { padding: 80px 0; text-align: center; }
+  .step-section { animation: stepReveal .28s ease; }
+  .step-section[hidden] { display: none !important; }
+  @keyframes stepReveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -92,14 +95,20 @@
         <div class="p-price" id="pPrice"></div>
         <p class="p-save" id="pSave" hidden></p>
 
-        <span class="field-label" id="packLabel" hidden>Select pack</span>
-        <div class="size-opts" id="packOpts" hidden></div>
+        <div id="packStep" class="step-section" hidden>
+          <span class="field-label" id="packLabel">1. Select pack</span>
+          <div class="size-opts" id="packOpts"></div>
+        </div>
 
-        <span class="field-label" id="countryLabel" hidden>Select country</span>
-        <div class="size-opts" id="countryOpts" hidden></div>
+        <div id="countryStep" class="step-section" hidden>
+          <span class="field-label" id="countryLabel">2. Select country</span>
+          <div class="size-opts" id="countryOpts"></div>
+        </div>
 
-        <span class="field-label" id="sizeLabel">Select option</span>
-        <div class="size-opts" id="sizeOpts"></div>
+        <div id="sizeStep" class="step-section" hidden>
+          <span class="field-label" id="sizeLabel">Select option</span>
+          <div class="size-opts" id="sizeOpts"></div>
+        </div>
 
         <div class="mixed-note" id="variantNoteWrap">
           <label class="field-label" for="variantNote" id="variantNoteLabel">Note</label>
@@ -196,12 +205,47 @@ if (!product) {
   const packLabel = document.getElementById('packLabel');
   const countryOpts = document.getElementById('countryOpts');
   const countryLabel = document.getElementById('countryLabel');
+  const packStep = document.getElementById('packStep');
+  const countryStep = document.getElementById('countryStep');
+  const sizeStep = document.getElementById('sizeStep');
   const hasPacks = product.packs?.length > 0;
   const hasCountries = product.countries?.length > 0;
-  let activePackId = params.get('pack') || (hasPacks ? product.packs[0].id : null);
-  if (hasPacks && !product.packs.some(p => p.id === activePackId)) activePackId = product.packs[0].id;
-  let activeCountryId = params.get('country') || (hasCountries ? product.countries[0].id : null);
-  if (hasCountries && !product.countries.some(c => c.id === activeCountryId)) activeCountryId = product.countries[0].id;
+  const isPlatesFlow = hasPacks && hasCountries;
+  let activePackId = params.get('pack') || (isPlatesFlow ? null : (hasPacks ? product.packs[0].id : null));
+  let activeCountryId = params.get('country') || (isPlatesFlow ? null : (hasCountries ? product.countries[0].id : null));
+  if (hasPacks && activePackId && !product.packs.some(p => p.id === activePackId)) activePackId = isPlatesFlow ? null : product.packs[0].id;
+  if (hasCountries && activeCountryId && !product.countries.some(c => c.id === activeCountryId)) activeCountryId = isPlatesFlow ? null : product.countries[0].id;
+  if (isPlatesFlow && !activePackId) activeCountryId = null;
+
+  function revealStep(el) {
+    if (!el || !el.hidden) return;
+    el.hidden = false;
+    el.classList.remove('step-section');
+    void el.offsetWidth;
+    el.classList.add('step-section');
+  }
+
+  function hideStep(el) {
+    if (el) el.hidden = true;
+  }
+
+  function updateStepVisibility() {
+    if (!isPlatesFlow) {
+      if (hasPacks) revealStep(packStep);
+      else hideStep(packStep);
+      hideStep(countryStep);
+      return;
+    }
+    revealStep(packStep);
+    if (activePackId) revealStep(countryStep);
+    else hideStep(countryStep);
+    if (activeCountryId) revealStep(sizeStep);
+    else hideStep(sizeStep);
+  }
+
+  function platesSelectionComplete() {
+    return !!(activePackId && activeCountryId && getActiveSizeEl());
+  }
 
   function currentPack() {
     return hasPacks ? getActivePack(product, activePackId) : null;
@@ -218,6 +262,14 @@ if (!product) {
   }
 
   function updatePrice() {
+    if (isPlatesFlow && !activePackId) {
+      const fromPrice = Math.min(...product.packs.map(p => p.price));
+      pPriceEl.innerHTML =
+        'From ' + formatPrice(fromPrice) + ' AUD' +
+        '<small>incl. GST · free AU shipping over $' + FREE_SHIPPING_MIN + '</small>';
+      pSaveEl.hidden = true;
+      return;
+    }
     const pack = currentPack();
     const price = pack ? pack.price : product.price;
     const compareAt = pack ? pack.compareAt : product.compareAt;
@@ -261,14 +313,23 @@ if (!product) {
   }
 
   function updateBuyButton() {
-    const sizes = currentSizes();
-    const active = getActiveSizeEl() || sizeOpts.querySelector('.size-opt') || null;
-    const sizeId = active?.dataset.id || sizes[0].id;
-    const variantId = buildVariantId(product, activePackId, sizeId);
-    const link = getStripeLink(product, variantId);
     const buyBtn = document.getElementById('buyBtn');
     const disabledBtn = document.getElementById('buyBtnDisabled');
     const note = document.getElementById('stripeNote');
+
+    if (isPlatesFlow && !platesSelectionComplete()) {
+      buyBtn.hidden = true;
+      disabledBtn.hidden = false;
+      disabledBtn.textContent = 'Complete selection above';
+      note.textContent = 'Select pack, country, and plate size to checkout.';
+      return;
+    }
+
+    const sizes = currentSizes();
+    const active = getActiveSizeEl() || (!isPlatesFlow ? sizeOpts.querySelector('.size-opt') : null);
+    const sizeId = active?.dataset.id || sizes[0]?.id;
+    const variantId = buildVariantId(product, activePackId, sizeId);
+    const link = getStripeLink(product, variantId);
 
     if (link) {
       buyBtn.href = link;
@@ -278,6 +339,7 @@ if (!product) {
     } else {
       buyBtn.hidden = true;
       disabledBtn.hidden = false;
+      disabledBtn.textContent = 'Payment link coming soon';
       note.textContent = 'Payment link coming soon for this option.';
     }
   }
@@ -286,7 +348,11 @@ if (!product) {
     let inc = [];
     if (INCLUDES[product.id]) {
       const entry = INCLUDES[product.id];
-      inc = Array.isArray(entry) ? entry : (entry[activePackId] || entry[product.packs[0].id] || []);
+      if (isPlatesFlow && !activePackId) {
+        inc = [];
+      } else {
+        inc = Array.isArray(entry) ? entry : (entry[activePackId] || entry[product.packs[0].id] || []);
+      }
     }
     document.getElementById('includesList').innerHTML = inc.map(i => `<li>${i}</li>`).join('');
     document.getElementById('includesBox').hidden = inc.length === 0;
@@ -317,26 +383,36 @@ if (!product) {
   }
 
   function renderSizes() {
+    if (isPlatesFlow && !activeCountryId) {
+      sizeOpts.innerHTML = '';
+      hideStep(sizeStep);
+      updateVariantNote();
+      updateBuyButton();
+      return;
+    }
     const sizes = currentSizes();
     const singleSize = sizes.length === 1;
-    if (singleSize) {
-      sizeLabel.hidden = true;
-      sizeOpts.hidden = true;
+    if (singleSize && !isPlatesFlow) {
+      hideStep(sizeStep);
     } else {
-      sizeLabel.hidden = false;
-      sizeOpts.hidden = false;
-      sizeLabel.textContent = hasCountries
-        ? (activePackId === 'dual' ? 'Select plate size (both same, or mixed)' : 'Select plate size')
+      revealStep(sizeStep);
+      sizeLabel.textContent = isPlatesFlow
+        ? (activePackId === 'dual' ? '3. Select plate size (both same, or mixed)' : '3. Select plate size')
         : (hasPacks ? 'Select size' : 'Select option');
       sizeOpts.className = 'size-opts' + (sizes.length === 2 ? ' multi-2' : sizes.length >= 3 ? ' multi-3' : '');
     }
-    sizeOpts.innerHTML = sizes.map((s, i) => `
-      <div class="size-opt ${i === 0 ? 'active' : ''}" tabindex="0" role="radio" aria-checked="${i === 0}"
+    const preselected = params.get('size');
+    sizeOpts.innerHTML = sizes.map(s => {
+      const active = isPlatesFlow ? s.id === preselected : sizes.indexOf(s) === 0;
+      return `
+      <div class="size-opt ${active ? 'active' : ''}" tabindex="0" role="radio" aria-checked="${active}"
         data-id="${s.id}" data-label="${s.label}" data-dim="${s.dim}">
         <span class="name">${s.label}</span>
         <span class="dim">${sizeDimLabel(s)}</span>
         ${s.note ? `<span class="note">${s.note}</span>` : ''}
-      </div>`).join('');
+      </div>`;
+    }).join('');
+    if (isPlatesFlow && preselected) params.delete('size');
     bindSizeOpts();
     updateVariantNote();
     updateIncludes();
@@ -344,13 +420,14 @@ if (!product) {
   }
 
   function renderCountries() {
-    if (!hasCountries) {
-      countryLabel.hidden = true;
-      countryOpts.hidden = true;
+    if (!hasCountries) return;
+    if (isPlatesFlow && !activePackId) {
+      countryOpts.innerHTML = '';
+      hideStep(countryStep);
       return;
     }
-    countryLabel.hidden = false;
-    countryOpts.hidden = false;
+    revealStep(countryStep);
+    countryLabel.textContent = isPlatesFlow ? '2. Select country' : 'Select country';
     countryOpts.className = 'size-opts multi-3';
     countryOpts.innerHTML = product.countries.map(c => `
       <div class="size-opt ${c.id === activeCountryId ? 'active' : ''}" tabindex="0" role="radio"
@@ -367,6 +444,7 @@ if (!product) {
         });
         opt.classList.add('active');
         opt.setAttribute('aria-checked', 'true');
+        sizeOpts.innerHTML = '';
         renderSizes();
       };
       opt.addEventListener('click', pick);
@@ -378,15 +456,14 @@ if (!product) {
 
   function renderPacks() {
     if (!hasPacks) {
-      packLabel.hidden = true;
-      packOpts.hidden = true;
+      hideStep(packStep);
       renderCountries();
       renderSizes();
       updatePrice();
       return;
     }
-    packLabel.hidden = false;
-    packOpts.hidden = false;
+    revealStep(packStep);
+    packLabel.textContent = isPlatesFlow ? '1. Select pack' : 'Select pack';
     packOpts.className = 'size-opts multi-2';
     packOpts.innerHTML = product.packs.map(pk => `
       <div class="size-opt ${pk.id === activePackId ? 'active' : ''}" tabindex="0" role="radio"
@@ -397,15 +474,20 @@ if (!product) {
     packOpts.querySelectorAll('.size-opt').forEach(opt => {
       const pick = () => {
         activePackId = opt.dataset.packId;
+        activeCountryId = null;
         packOpts.querySelectorAll('.size-opt').forEach(o => {
           o.classList.remove('active');
           o.setAttribute('aria-checked', 'false');
         });
         opt.classList.add('active');
         opt.setAttribute('aria-checked', 'true');
+        sizeOpts.innerHTML = '';
         updatePrice();
         renderCountries();
-        renderSizes();
+        if (isPlatesFlow) hideStep(sizeStep);
+        else renderSizes();
+        updateIncludes();
+        updateBuyButton();
       };
       opt.addEventListener('click', pick);
       opt.addEventListener('keydown', e => {
@@ -415,6 +497,7 @@ if (!product) {
     renderCountries();
     renderSizes();
     updatePrice();
+    updateStepVisibility();
   }
 
   renderPacks();
